@@ -9,11 +9,8 @@ export default {
             fontFamily: {
                 montserrat: ["var(--font-montserrat)"],
                 inter: ["var(--inter)"],
-                nsKR: ["var(--noto-sans-kr)"],
             },
-            boxShadow: {
-                filter: "0 0 1px 0 rgba(23, 26, 31, 0.07), 0 0 2px 0 rgba(23, 26, 31, 0.12)",
-            },
+            boxShadow: {},
             backgroundImage: {},
         },
     },
