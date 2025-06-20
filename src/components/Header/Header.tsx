@@ -10,7 +10,7 @@ export default function Header() {
                     </Link>
                     <div className="w-fit flex items-center">
                         <div className="px-4 text-[#565d6dff] text-base leading-[26px] font-normal">
-                            <span className="cursor-pointer">프로젝트</span>
+                            <Link href="/project/list">프로젝트</Link>
                         </div>
                         <div className="px-4 text-[#565d6dff] text-base leading-[26px] font-normal">
                             <span className="cursor-pointer">데이터</span>
