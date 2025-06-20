@@ -2,11 +2,15 @@ import { montserrat } from "@/assets/fonts/fonts";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
     variable: "--inter",
+    subsets: ["latin"],
+});
+const notoSansKR = Noto_Sans_KR({
+    variable: "--noto-sans-kr",
     subsets: ["latin"],
 });
 
@@ -22,7 +26,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${inter.variable} ${montserrat.variable} font-inter`}>
+            <body className={`${inter.variable} ${montserrat.variable} ${notoSansKR.variable} font-inter`}>
                 <Header />
                 {children}
                 <Footer />
