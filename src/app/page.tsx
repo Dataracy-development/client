@@ -39,7 +39,7 @@ const PopularProjects = () => {
     );
 };
 
-const ProjectCard = () => {
+export const ProjectCard = () => {
     return (
         <div className="h-[480px] bg-white rounded-[10px] border border-[#bdc1ca]">
             <div className="w-full h-[192px] rounded-t-[10px] bg-gray-200 flex justify-center items-center text-gray-400">IMG</div>
