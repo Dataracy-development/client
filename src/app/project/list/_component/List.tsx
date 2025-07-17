@@ -113,7 +113,7 @@ export default function List() {
 const Item = ({ item }: { item: ItemProps }) => {
     return (
         <Link href={`/project/1`}>
-            <div className="w-full h-[176px] bg-white rounded-2xl border border-[#F3F4F6] flex cursor-pointer relative">
+            <div className="w-full h-[176px] bg-white rounded-2xl border border-n200 flex cursor-pointer relative">
                 <div className="w-[246px] h-full flex items-center justify-center rounded-l-2xl overflow-hidden bg-gray-200 text-gray-500">THUMBNAIL</div>
                 <div className="px-5 pt-2.5 pb-3 flex-1">
                     <div className="flex items-center gap-1 mb-1.5">
@@ -124,13 +124,13 @@ const Item = ({ item }: { item: ItemProps }) => {
                         ))}
                     </div>
 
-                    <div className="mb-1.5 font-nsKR font-bold text-xl leading-[30px] text-[#171A1F]">{item.title}</div>
+                    <div className="mb-1.5  font-bold text-xl leading-[30px] text-n900">{item.title}</div>
 
-                    <div className="mb-3 font-normal text-xs leading-5 text-[#323743]">{item.description}</div>
+                    <div className="mb-3 font-normal text-xs leading-5 text-n700">{item.description}</div>
 
                     <div className="flex items-center gap-2">
                         <div className="w-9 h-9 rounded-full bg-gray-200"></div>
-                        <div className="text-sm leading-[22px] font-normal text-[#171A1F]">{item.userName}</div>
+                        <div className="text-sm leading-[22px] font-normal text-n900">{item.userName}</div>
                     </div>
                 </div>
 
@@ -158,5 +158,5 @@ const Item = ({ item }: { item: ItemProps }) => {
 };
 
 const FloatBtn = () => {
-    return <div className="fixed bottom-[43px] right-[52px] bg-[#171A1F] rounded-full w-[100px] h-[100px] cursor-pointer"></div>;
+    return <div className="fixed bottom-[43px] right-[52px] bg-n900 rounded-full w-[100px] h-[100px] cursor-pointer"></div>;
 };

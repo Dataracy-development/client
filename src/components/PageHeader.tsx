@@ -23,7 +23,7 @@ export default function PageHeader() {
         <div className="w-full h-[190px] banner flex justify-center items-center">
             {currentPage && (
                 <div className="w-full text-white text-center">
-                    <div className="font-nsKR font-bold text-[32px] leading-[48px] mb-[1px]">{currentPage.title}</div>
+                    <div className=" font-bold text-[32px] leading-[48px] mb-[1px]">{currentPage.title}</div>
                     <div className="font-normal text-base leading-[26px]">{currentPage.description}</div>
                 </div>
             )}

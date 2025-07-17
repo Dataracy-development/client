@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${inter.variable} ${montserrat.variable} ${notoSansKR.variable} font-inter`}>
+            <body className={`${inter.variable} ${montserrat.variable} ${notoSansKR.variable} `}>
                 <QueryProviderWrapper>
                     <Header />
                     {children}

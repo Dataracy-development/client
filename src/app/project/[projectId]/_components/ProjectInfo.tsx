@@ -1,4 +1,4 @@
-import { ProjectCard } from "@/app/page";
+import { ProjectCard } from "@/app/(main)/page";
 import Label from "@/components/Label";
 
 export default function ProjectInfo() {
@@ -20,7 +20,7 @@ const Title = () => {
     return (
         <div className="w-full">
             <div className="w-full h-[255px] bg-blue-100 flex items-center justify-center text-blue-400 rounded-t-2xl">IMG</div>
-            <div className="w-full rounded-b-2xl p-5 bg-[#f3f4f6] relative">
+            <div className="w-full rounded-b-2xl p-5 bg-n200 relative">
                 <div className="flex gap-1 mb-4">
                     {["커머스", "실무자", "Python"].map((v) => {
                         return (
@@ -30,16 +30,16 @@ const Title = () => {
                         );
                     })}
                 </div>
-                <div className="text-[32px] font-bold leading-[48px] text-[#171a1f] mb-[34px] font-nsKR">온라인 쇼핑몰 고객 행동 패턴 분석 및 추천 시스템 구축</div>
+                <div className="text-[32px] font-bold leading-[48px] text-n900 mb-[34px] ">온라인 쇼핑몰 고객 행동 패턴 분석 및 추천 시스템 구축</div>
                 <div className="flex gap-[30px] items-center">
                     <div className="flex items-center gap-2">
                         <div className="w-10 h-10 bg-blue-200 rounded-full"></div>
                         <div>
-                            <div className="font-inter text-sm leading-[22px] text-[#171a1f] font-bold">이시각화</div>
-                            <div className="font-inter text-xs leading-[20px] text-[#171a1f]">데이터 분석가</div>
+                            <div className="font-inter text-sm leading-[22px] text-n900 font-bold">이시각화</div>
+                            <div className="font-inter text-xs leading-[20px] text-n900">데이터 분석가</div>
                         </div>
                     </div>
-                    <div className="font-inter text-sm leading-[22px] text-[#9095a1]">3일 전</div>
+                    <div className="font-inter text-sm leading-[22px] text-n500">3일 전</div>
                 </div>
 
                 <div className="absolute top-5 right-3.5">
@@ -121,8 +121,8 @@ const Title = () => {
 const Content = () => {
     return (
         <div className="mt-5 p-5">
-            <div className="font-nsKR text-xl leading-[30px] font-bold mb-5 text-[#171a1f]">프로젝트 개요</div>
-            <div className="font-inter text-sm font-normal leading-[22px] text-[#171a1f]">
+            <div className=" text-xl leading-[30px] font-bold mb-5 text-n900">프로젝트 개요</div>
+            <div className="font-inter text-sm font-normal leading-[22px] text-n900">
                 Minim commodo labore laborum dolor cillum est et excepteur sit nostrud qui irure consectetur non reprehenderit. Quis consectetur cupidatat ea occaecat laborum laboris excepteur culpa
                 eu laborum voluptate exercitation ad irure voluptate. Irure cillum eu aute duis esse ut proident enim occaecat duis dolor consectetur Lorem do. Id sit ex elit culpa aute do culpa
                 officia irure nisi aute do mollit id ut.Sunt aliqua occaecat nostrud eiusmod cupidatat ad ad. Magna esse adipisicing fugiat ullamco nulla deserunt. Consequat quis cupidatat aliqua
@@ -136,8 +136,8 @@ const Content = () => {
 const AnalysisObjective = () => {
     return (
         <div className="mt-5 p-5">
-            <div className="font-nsKR text-xl leading-[30px] font-bold mb-5 text-[#171a1f]">분석 목표</div>
-            <div className="font-inter text-sm font-normal leading-[22px] text-[#171a1f]">
+            <div className=" text-xl leading-[30px] font-bold mb-5 text-n900">분석 목표</div>
+            <div className="font-inter text-sm font-normal leading-[22px] text-n900">
                 Minim commodo labore laborum dolor cillum est et excepteur sit nostrud qui irure consectetur non reprehenderit. Quis consectetur cupidatat ea occaecat laborum laboris excepteur culpa
                 eu laborum voluptate exercitation ad irure voluptate. Irure cillum eu aute duis esse ut proident enim occaecat duis dolor consectetur Lorem do. Id sit ex elit culpa aute do culpa
                 officia irure nisi aute do mollit id ut.Sunt aliqua occaecat nostrud eiusmod cupidatat ad ad. Magna esse adipisicing fugiat ullamco nulla deserunt. Consequat quis cupidatat aliqua
@@ -151,16 +151,16 @@ const AnalysisObjective = () => {
 const KeyAchievements = () => {
     return (
         <div className="mt-5 p-5">
-            <div className="font-nsKR text-xl leading-[30px] font-bold mb-5 text-[#171a1f]">주요 성과</div>
+            <div className=" text-xl leading-[30px] font-bold mb-5 text-n900">주요 성과</div>
 
             <div className="grid grid-cols-3 gap-5">
                 {[1, 2, 3].map((v) => {
                     return (
-                        <div key={v} className="border border-[#f3f4f6] p-6 rounded-2xl shadow-card flex items-center justify-between">
+                        <div key={v} className="border border-n200 p-6 rounded-2xl shadow-card flex items-center justify-between">
                             <div className="flex flex-col gap-2">
-                                <div className="font-nsKR text-base font-normal leading-[26px] text-[#323743]">KPI Monthly</div>
+                                <div className=" text-base font-normal leading-[26px] text-n700">KPI Monthly</div>
                                 <div className="font-inter font-bold text-[32px] leading-[48px] text-[#636ae8]">72%</div>
-                                <div className="font-inter text-base font-bold leading-[26px] text-[#171A1F]">
+                                <div className="font-inter text-base font-bold leading-[26px] text-n900">
                                     $152k<span className="text-[#6F7787]">/$220k</span>
                                 </div>
                             </div>
@@ -184,9 +184,9 @@ const KeyAchievements = () => {
 
 const Skills = () => {
     return (
-        <div className="w-full p-5 bg-[#f3f4f6] mt-[43px]">
-            <div className="font-nsKR text-xl leading-[30px] font-bold mb-5 text-[#171a1f]">사용 기술</div>
-            <div className="font-inter text-sm font-normal leading-[22px] text-[#171a1f]">
+        <div className="w-full p-5 bg-n200 mt-[43px]">
+            <div className=" text-xl leading-[30px] font-bold mb-5 text-n900">사용 기술</div>
+            <div className="font-inter text-sm font-normal leading-[22px] text-n900">
                 Minim commodo labore laborum dolor cillum est et excepteur sit nostrud qui irure consectetur non reprehenderit. Quis consectetur cupidatat ea occaecat laborum laboris excepteur culpa
                 eu laborum
             </div>
@@ -197,8 +197,8 @@ const Skills = () => {
 const DetailedAnalysisProcess = () => {
     return (
         <div className="mt-7 p-5">
-            <div className="font-nsKR text-xl leading-[30px] font-bold mb-5 text-[#171a1f]">상세 분석 과정</div>
-            <div className="font-inter text-sm font-normal leading-[22px] text-[#171a1f]">
+            <div className=" text-xl leading-[30px] font-bold mb-5 text-n900">상세 분석 과정</div>
+            <div className="font-inter text-sm font-normal leading-[22px] text-n900">
                 Minim commodo labore laborum dolor cillum est et excepteur sit nostrud qui irure consectetur non reprehenderit. Quis consectetur cupidatat ea occaecat laborum laboris excepteur culpa
                 eu laborum voluptate exercitation ad irure voluptate. Irure cillum eu aute duis esse ut proident enim occaecat duis dolor consectetur Lorem do. Id sit ex elit culpa aute do culpa
                 officia irure nisi aute do mollit id ut.Sunt aliqua occaecat nostrud eiusmod cupidatat ad ad. Magna esse adipisicing fugiat ullamco nulla deserunt. Consequat quis cupidatat aliqua
@@ -212,11 +212,8 @@ const DetailedAnalysisProcess = () => {
 const Feedback = () => {
     return (
         <div className="px-5 pt-2.5 pb-8">
-            <div className="font-nsKR text-xl leading-[30px] font-bold mb-2.5 text-[#171a1f]">피드백</div>
-            <textarea
-                className="w-full h-[100px] border border-[#bdc1ca] rounded-[10px] p-3 resize-none focus:outline-none font-inter text-sm leading-[22px] text-[#171a1f]"
-                placeholder="Type a message"
-            />
+            <div className=" text-xl leading-[30px] font-bold mb-2.5 text-n900">피드백</div>
+            <textarea className="w-full h-[100px] border border-n400 rounded-[10px] p-3 resize-none focus:outline-none font-inter text-sm leading-[22px] text-n900" placeholder="Type a message" />
 
             <div className="flex flex-col gap-2 mt-5 relative">
                 {[1, 2].map((v) => {
@@ -224,8 +221,8 @@ const Feedback = () => {
                         <div key={v} className="w-full flex items-center gap-2">
                             <div className="w-11 h-11 rounded-full bg-blue-100"></div>
                             <div className="flex-1">
-                                <div className="font-inter text-sm leading-[22px] font-bold text-[#171a1f]">김데이터</div>
-                                <div className="font-inter text-xs leading-[20px] text-[#171A1F]">
+                                <div className="font-inter text-sm leading-[22px] font-bold text-n900">김데이터</div>
+                                <div className="font-inter text-xs leading-[20px] text-n900">
                                     Minim commodo labore laborum dolor cillum est et excepteur sit nostrud qui irure consectetur non reprehenderit. Quis consectetur cupidatat ea occaecat laborum
                                     laboris excepteur culpa eu laborum
                                 </div>
@@ -257,7 +254,7 @@ const Feedback = () => {
 const RelatedProject = () => {
     return (
         <div className="mt-[26px] p-5">
-            <div className="font-nsKR text-xl leading-[30px] font-bold mb-5 text-[#171a1f]">관심분야가 같은 사람들의 프로젝트</div>
+            <div className=" text-xl leading-[30px] font-bold mb-5 text-n900">관심분야가 같은 사람들의 프로젝트</div>
 
             <div className="grid grid-cols-3 gap-[45px]">
                 {[1, 2, 3].map((v) => {

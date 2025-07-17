@@ -1,46 +1,46 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
+    const router = useRouter();
+
     return (
-        <div className="w-full h-[85px]">
-            <div className="max-w-[1200px] w-full px-3 mx-auto h-full flex items-center justify-between">
-                <div className="flex items-center gap-[26px]">
-                    <Link href="/" className="text-[32px] leading-12 font-bold text-[#636ae8ff] font-montserrat">
+        <div className="w-full h-[105px]">
+            <div className="max-w-[1200px] w-full px-2.5 mx-auto h-full flex items-center justify-between">
+                <div className="flex items-center gap-[25px]">
+                    <Link href="/" className="text-logo2 text-primary font-montserrat">
                         Dataracy
                     </Link>
                     <div className="w-fit flex items-center">
-                        <div className="px-4 text-[#565d6dff] text-base leading-[26px] font-normal">
+                        <div className="px-4 text-n500 text-button ">
                             <Link href="/project/list">프로젝트</Link>
                         </div>
-                        <div className="px-4 text-[#565d6dff] text-base leading-[26px] font-normal">
-                            <span className="cursor-pointer">데이터</span>
+                        <div className="px-4 text-n500 text-button ">
+                            <Link href="/">데이터</Link>
                         </div>
-                        <div className="px-4 text-[#565d6dff] text-base leading-[26px] font-normal">
-                            <span className="cursor-pointer">스토어</span>
+                        <div className="px-4 text-n500 text-button ">
+                            <Link href="/">스토어</Link>
                         </div>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-[21px]">
-                    <div className="w-[448px] h-9 px-3 border border-[#bdc1caff] rounded-[18px] flex items-center gap-2">
-                        <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M13.7097 13.8844L11.4297 11.6044" stroke="#BDC1CA" strokeWidth="1.368" strokeMiterlimit="10" strokeLinecap="square" />
+                <div className="flex items-center gap-[60px]">
+                    <div className="w-[380px] h-[45px] px-3 bg-n200 rounded-xl flex items-center gap-[15px]">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
-                                d="M6.8598 11.5944C9.37822 11.5944 11.4198 9.55278 11.4198 7.03437C11.4198 4.51595 9.37822 2.47437 6.8598 2.47437C4.34139 2.47437 2.2998 4.51595 2.2998 7.03437C2.2998 9.55278 4.34139 11.5944 6.8598 11.5944Z"
-                                stroke="#BDC1CA"
-                                strokeWidth="1.368"
-                                strokeMiterlimit="10"
-                                strokeLinecap="square"
+                                d="M19.6 21L13.3 14.7C12.8 15.1 12.225 15.4167 11.575 15.65C10.925 15.8833 10.2333 16 9.5 16C7.68333 16 6.14583 15.3708 4.8875 14.1125C3.62917 12.8542 3 11.3167 3 9.5C3 7.68333 3.62917 6.14583 4.8875 4.8875C6.14583 3.62917 7.68333 3 9.5 3C11.3167 3 12.8542 3.62917 14.1125 4.8875C15.3708 6.14583 16 7.68333 16 9.5C16 10.2333 15.8833 10.925 15.65 11.575C15.4167 12.225 15.1 12.8 14.7 13.3L21 19.6L19.6 21ZM9.5 14C10.75 14 11.8125 13.5625 12.6875 12.6875C13.5625 11.8125 14 10.75 14 9.5C14 8.25 13.5625 7.1875 12.6875 6.3125C11.8125 5.4375 10.75 5 9.5 5C8.25 5 7.1875 5.4375 6.3125 6.3125C5.4375 7.1875 5 8.25 5 9.5C5 10.75 5.4375 11.8125 6.3125 12.6875C7.1875 13.5625 8.25 14 9.5 14Z"
+                                fill="#9095A1"
                             />
-                            <path d="M4.56934 7.02438C4.56934 5.76518 5.59013 4.74438 6.84934 4.74438" stroke="#BDC1CA" strokeWidth="1.368" strokeMiterlimit="10" strokeLinecap="round" />
                         </svg>
 
-                        <input type="text" className="flex-1 focus:outline-none h-full text-sm leading-9 font-normal" placeholder="프로젝트, 데이터셋 검색" />
+                        <input type="text" className="flex-1 focus:outline-none h-full text-body2 bg-n200  leading-[45px]" placeholder="프로젝트, 데이터셋 검색" />
                     </div>
-                    <div className="flex gap-3 items-center">
-                        <button className="h-9 rounded-md text-sm font-normal text-[#636ae8ff] border border-[#636ae8ff] cursor-pointer px-3">로그인</button>
-                        <button className="h-9 rounded-md text-sm font-normal text-white border border-white bg-[#636ae8ff] cursor-pointer px-3">회원가입</button>
-                    </div>
+
+                    <button className="w-[140px] h-[45px] rounded-xl bg-secondary text-name  text-white" onClick={() => router.push("/login")}>
+                        시작하기
+                    </button>
                 </div>
             </div>
         </div>

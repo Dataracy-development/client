@@ -69,7 +69,7 @@ export default function Pagination({ page, viewPerPage, total, onChange }: Pagin
                     <button
                         key={index}
                         onClick={() => typeof number === "number" && onChange(number)}
-                        className={`w-10 h-9 rounded-2xl cursor-pointer text-[#9095A1] text-sm font-normal border border-[#DEE1E6] ${
+                        className={`w-10 h-9 rounded-2xl cursor-pointer text-n500 text-sm font-normal border border-n300 ${
                             page === number ? "bg-[#636AE8] !text-white border-none" : typeof number === "string" ? "" : "hover:bg-[#636AE8] hover:text-white"
                         } ${typeof number === "string" ? "cursor-default" : ""}`}
                         disabled={typeof number === "string"}

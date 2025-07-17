@@ -23,22 +23,23 @@ interface ButtonProps {
 
 export default function Button({ label, onClick, type = "button", btnType = "primary", size = "large", icLeft, icRight, disabled = false, className = "" }: ButtonProps) {
     const buttonStyles = {
-        primary: "bg-taskmateRed text-n0 border border-transparent hover:bg-[#f54b4a] disabled:bg-n400 disabled:text-n600",
-        secondary: "bg-n800 text-n0 border border-transparent hover:bg-[#333952] disabled:bg-n400 disabled:text-n600",
-        line_red: "bg-white text-taskmateRed border border-taskmateRed hover:bg-taskmateRed/5 disabled:bg-n400 disabled:text-n600 disabled:border-transparent",
-        line: "bg-white text-n800 border border-n500 hover:bg-n75 disabled:bg-n400 disabled:text-n600 disabled:border-transparent",
-        minimal: "bg-white text-n800 border border-transparent hover:bg-n75 disabled:bg-n400 disabled:text-n600",
+        primary:
+            "bg-gradient-to-r from-[#636ae8] to-[#7c82f0] text-white border border-transparent hover:shadow-lg transform hover:scale-[1.02] disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:transform-none",
+        secondary: "bg-gray-800 text-white border border-transparent hover:bg-gray-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed",
+        line_red: "bg-white text-red-500 border border-red-500 hover:bg-red-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:border-gray-200 disabled:cursor-not-allowed",
+        line: "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:border-gray-200 disabled:cursor-not-allowed",
+        minimal: "bg-white text-gray-700 border border-transparent hover:bg-gray-50 disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed",
     };
 
     const buttonSizeStyles = {
-        large: "px-4 h-12 text-baseEmphasize",
-        medium: "px-4 h-[46px] text-smEmphasize",
-        small: "px-3 h-8 text-smEmphasize",
+        large: "px-6 h-14 text-lg font-semibold",
+        medium: "px-4 h-12 text-base font-medium",
+        small: "px-3 h-10 text-sm font-medium",
     };
 
     return (
         <button
-            className={`rounded-md transition-colors flex items-center justify-center gap-1 ${buttonStyles[btnType]} ${buttonSizeStyles[size]} ${className}`}
+            className={`rounded-xl transition-all duration-200 flex items-center justify-center gap-2 ${buttonStyles[btnType]} ${buttonSizeStyles[size]} ${className}`}
             onClick={onClick}
             type={type}
             disabled={disabled}

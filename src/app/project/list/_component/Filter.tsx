@@ -141,7 +141,7 @@ export default function Filter() {
                 return (
                     <div key={item.title}>
                         <FilterItems items={item} onChange={onChange} />
-                        {idx !== filterItems.length - 1 && <div className="w-full h-[1px] bg-[#F3F4F6] mt-[30px] mb-5"></div>}
+                        {idx !== filterItems.length - 1 && <div className="w-full h-[1px] bg-n200 mt-[30px] mb-5"></div>}
                     </div>
                 );
             })}
@@ -167,7 +167,7 @@ const FilterItems = ({ items, onChange: onChangeProps }: { items: FilterItem; on
 
     return (
         <div>
-            <div className="flex items-center justify-between cursor-pointer font-nsKR text-base leading-[26px] font-bold mb-4" onClick={() => setIsOpen(!isOpen)}>
+            <div className="flex items-center justify-between cursor-pointer  text-base leading-[26px] font-bold mb-4" onClick={() => setIsOpen(!isOpen)}>
                 {items.title}
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: `rotate(${isOpen ? 0 : -180}deg)`, transition: "transform 0.2s" }}>
                     <path
