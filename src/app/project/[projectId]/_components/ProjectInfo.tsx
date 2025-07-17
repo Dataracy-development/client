@@ -1,4 +1,4 @@
-import { ProjectCard } from "@/app/(main)/page";
+import ProjectCard from "@/app/(main)/_components/ProjectCard";
 import Label from "@/components/Label";
 
 export default function ProjectInfo() {

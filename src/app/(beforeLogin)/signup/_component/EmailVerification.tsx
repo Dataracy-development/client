@@ -1,10 +1,10 @@
 import { onCheckEmailVerificationCodeApi, onSendEmailVerificationCodeApi } from "@/apis/authApis";
 import Input from "@/components/Input";
+import { validateEmail } from "@/utils/utils";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { useSignupStore } from "../store/store";
-import { validateEmail } from "../utils/utils";
 
 export default function EmailVerification() {
     const { formData, setField, setError, setIsEmailVerified } = useSignupStore();
@@ -85,8 +85,9 @@ export default function EmailVerification() {
                     errMsg={formData.errors.email}
                     isConfirm={isClickEmailVerification || formData.isEmailVerified}
                     confirmMsg={formData.isEmailVerified ? "본인 인증이 완료되었습니다" : isClickEmailVerification ? "인증번호가 전송되었습니다" : undefined}
-                    children={formData.isEmailVerified ? <CheckIcon /> : undefined}
-                />
+                >
+                    {formData.isEmailVerified ? <CheckIcon /> : undefined}
+                </Input>
 
                 {!formData.isEmailVerified && (
                     <button
@@ -110,10 +111,11 @@ export default function EmailVerification() {
                         onChange={(e) => handleInputChange("verificationCode", e.target.value)}
                         placeholder="인증번호를 입력해 주세요"
                         type="text"
-                        children={isTimerFinish ? undefined : <Timer isTimerFinish={finishTimer} resetKey={timerResetKey} />}
                         isErr={!!formData.errors.verificationCode}
                         errMsg={formData.errors.verificationCode}
-                    />
+                    >
+                        {isTimerFinish ? undefined : <Timer isTimerFinish={finishTimer} resetKey={timerResetKey} />}
+                    </Input>
 
                     <button
                         type="button"

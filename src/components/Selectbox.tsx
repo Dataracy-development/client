@@ -34,7 +34,7 @@ const Selectbox: React.FC<SelectboxProps> = ({ label = "", isRequired = false, p
             const option = options.filter((v) => v.value === initialValue)[0];
             if (option) setSelectedOption(option.label);
         }
-    }, [initialValue]);
+    }, [initialValue, options]);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {

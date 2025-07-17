@@ -25,6 +25,7 @@ export default function SocialAuthPage() {
         fetchToken();
     }, []);
 
+    if (isLoading) return <div>Loading...</div>;
     if (error) {
         return <div className="text-red-500">{error}</div>;
     }

@@ -9,7 +9,7 @@ import OptionalInfoSection from "./_component/OptionalInfoSection";
 import RequiredInfoSection from "./_component/RequiredInfoSection";
 import { useSignupStore } from "./store/store";
 
-export default function EmailSignup({ setStep }: { setStep: (step: number) => void }) {
+export default function EmailSignup() {
     const { formData, validate, getRequestData, setLoading } = useSignupStore();
     const router = useRouter();
 
@@ -38,7 +38,6 @@ export default function EmailSignup({ setStep }: { setStep: (step: number) => vo
         (e: React.FormEvent) => {
             e.preventDefault();
 
-            console.log("formData:::", formData);
             if (validate()) {
                 // 회원가입 API 호출
                 const request = getRequestData();
@@ -88,10 +87,7 @@ export default function EmailSignup({ setStep }: { setStep: (step: number) => vo
                 {/* Footer */}
                 <div className="text-center mt-6">
                     <p className="text-white/70 text-sm">
-                        이미 계정이 있으신가요?{" "}
-                        <button onClick={() => setStep(0)} className="text-white font-medium hover:underline transition-colors">
-                            로그인하기
-                        </button>
+                        이미 계정이 있으신가요? <button className="text-white font-medium hover:underline transition-colors">로그인하기</button>
                     </p>
                 </div>
             </div>
