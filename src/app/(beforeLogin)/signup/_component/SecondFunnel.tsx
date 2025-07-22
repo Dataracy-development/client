@@ -55,7 +55,7 @@ export default function SecondFunnel() {
 
             setCurrentStep(3);
         },
-        [verificationCode, formData.email, checkEmailVerificationCode]
+        [verificationCode, formData.email, checkEmailVerificationCode, setCurrentStep]
     );
 
     return (

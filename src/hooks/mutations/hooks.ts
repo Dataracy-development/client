@@ -34,7 +34,7 @@ export const useMutationWithSpinner = <TData, TVariables>(
 };
 
 // 공통 mutation 생성 함수
-export const createMutation = <TData, TVariables>(
+export const useCreateMutation = <TData, TVariables>(
     mutationFn: (variables: TVariables) => Promise<TData>,
     mutationName: string,
     options: {
