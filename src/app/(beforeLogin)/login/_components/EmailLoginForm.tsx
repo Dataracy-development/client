@@ -1,9 +1,11 @@
 "use client";
 
 import { onLoginApi } from "@/apis/authApis";
+import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useInput } from "@/hooks/hooks";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -78,51 +80,17 @@ export default function EmailLoginForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-4">
-                <Input
-                    label="이메일"
-                    value={email.value}
-                    onChange={(e) => {
-                        email.onChange(e);
-                        setIsErrors({ ...isErrors, email: false });
-                        setErrorMessages({ ...errorMessages, email: "" });
-                    }}
-                    placeholder="이메일을 입력해주세요."
-                    type="email"
-                    isErr={isErrors.email}
-                    errMsg={errorMessages.email}
-                />
+        <form onSubmit={handleSubmit} className="flex flex-col gap-[14px]">
+            <Input label="이메일" name="email" {...email} placeholder="이메일을 입력해주세요." type="email" isRequired isErr={!!isErrors.email} errMsg={errorMessages.email} />
+            <Input label="비밀번호" name="password" {...password} placeholder="비밀번호를 입력해주세요." type="password" isRequired isErr={!!isErrors.password} errMsg={errorMessages.password} />
 
-                <Input
-                    label="비밀번호"
-                    value={password.value}
-                    onChange={(e) => {
-                        password.onChange(e);
-                        setIsErrors({ ...isErrors, password: false });
-                        setErrorMessages({ ...errorMessages, password: "" });
-                    }}
-                    placeholder="비밀번호를 입력해주세요."
-                    type="password"
-                    isErr={isErrors.password}
-                    errMsg={errorMessages.password}
-                />
+            <div className="flex justify-end items-center my-3">
+                <Link href="/find-password" className="text-body2 font-inter text-[#666666]">
+                    비밀번호 찾기
+                </Link>
             </div>
 
-            <button
-                type="submit"
-                className="w-full h-14 bg-gradient-to-r from-[#636ae8] to-[#7c82f0] text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                disabled={loginMutation.isPending}
-            >
-                {loginMutation.isPending ? (
-                    <div className="flex items-center justify-center gap-2">
-                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                        <span>로그인 중...</span>
-                    </div>
-                ) : (
-                    "로그인"
-                )}
-            </button>
+            <Button label="로그인" type="submit" />
         </form>
     );
 }

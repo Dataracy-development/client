@@ -1,6 +1,7 @@
 import { montserrat } from "@/assets/fonts/fonts";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
+import { SpinnerProvider } from "@/components/Spinner";
 import QueryProviderWrapper from "@/components/wrappers/QueryProviderWrapper";
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_KR } from "next/font/google";
@@ -27,11 +28,13 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${inter.variable} ${montserrat.variable} ${notoSansKR.variable} `}>
+            <body className={`${inter.variable} ${montserrat.variable} ${notoSansKR.variable} font-nsKR`}>
                 <QueryProviderWrapper>
-                    <Header />
-                    {children}
-                    <Footer />
+                    <SpinnerProvider>
+                        <Header />
+                        {children}
+                        <Footer />
+                    </SpinnerProvider>
                 </QueryProviderWrapper>
             </body>
         </html>

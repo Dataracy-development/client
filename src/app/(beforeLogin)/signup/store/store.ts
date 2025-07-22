@@ -7,36 +7,36 @@ export interface SignupFormData {
     password: string;
     passwordConfirm: string;
     nickname: string;
-    verificationCode: string;
+    level: number | null;
 
-    // 선택 정보 (향후 추가 예정)
-    authorLevel?: string;
-    occupation?: string;
-    topics?: string[];
-    visitSource?: string;
-    isAdTermsAgreed?: boolean;
-
-    // 상태 관리
-    isEmailVerified: boolean;
-    errors: Partial<SignupFormData>;
-    isLoading: boolean;
+    // 선택 정보
+    domains?: number[] | null;
+    occupation?: number | null;
+    visitSource?: number | null;
+    // isAdTermsAgreed?: boolean;
 }
 
 interface SignupStore {
     // 상태
     formData: SignupFormData;
+    currentStep: number; // Funnel Step(1, 2, 3)
 
     // 액션
     setField: (field: keyof SignupFormData, value: any) => void;
-    setError: (field: keyof SignupFormData, error: string) => void;
-    setErrors: (errors: Partial<SignupFormData>) => void;
-    clearErrors: () => void;
-    setIsEmailVerified: (verified: boolean) => void;
-    setLoading: (loading: boolean) => void;
+    setCurrentStep: (step: number) => void;
+
     reset: () => void;
 
+    // 상태 관리
+    errors: Partial<Record<keyof SignupFormData, string>>;
+    isLoading: boolean;
+    setError: (field: keyof SignupFormData, error: string) => void;
+    setErrors: (errors: Partial<SignupFormData>) => void;
+    setLoading: (loading: boolean) => void;
+
     // 유틸리티
-    validate: () => boolean;
+    validateEmailAndPassword: () => boolean;
+    validateBasicInfo: () => boolean;
     getRequestData: () => any;
 }
 
@@ -45,20 +45,22 @@ const initialFormData: SignupFormData = {
     password: "",
     passwordConfirm: "",
     nickname: "",
-    verificationCode: "",
-    authorLevel: "초심자",
-    occupation: "학생",
-    topics: [],
-    visitSource: "SNS",
-    isAdTermsAgreed: true,
-    isEmailVerified: false,
-    errors: {},
-    isLoading: false,
+    level: null,
+    occupation: null,
+    domains: [],
+    visitSource: null,
+    // isAdTermsAgreed: true,
 };
 
 export const useSignupStore = create<SignupStore>((set, get) => ({
-    formData: initialFormData,
+    // Funnel Step(1, 2, 3)
+    currentStep: 1,
+    setCurrentStep: (step) => {
+        set({ currentStep: step });
+    },
 
+    // Form Data
+    formData: initialFormData,
     setField: (field, value) => {
         set((state) => ({
             formData: {
@@ -68,18 +70,17 @@ export const useSignupStore = create<SignupStore>((set, get) => ({
         }));
     },
 
+    // 상태 관리
+    errors: {},
+    isLoading: false,
     setError: (field, error) => {
         set((state) => ({
-            formData: {
-                ...state.formData,
-                errors: {
-                    ...state.formData.errors,
-                    [field]: error,
-                },
+            errors: {
+                ...state.errors,
+                [field]: error,
             },
         }));
     },
-
     setErrors: (errors) => {
         set((state) => ({
             formData: {
@@ -88,25 +89,6 @@ export const useSignupStore = create<SignupStore>((set, get) => ({
             },
         }));
     },
-
-    clearErrors: () => {
-        set((state) => ({
-            formData: {
-                ...state.formData,
-                errors: {},
-            },
-        }));
-    },
-
-    setIsEmailVerified: (verified) => {
-        set((state) => ({
-            formData: {
-                ...state.formData,
-                isEmailVerified: verified,
-            },
-        }));
-    },
-
     setLoading: (loading) => {
         set((state) => ({
             formData: {
@@ -116,63 +98,68 @@ export const useSignupStore = create<SignupStore>((set, get) => ({
         }));
     },
 
+    // Utils
     reset: () => {
         set({ formData: initialFormData });
     },
 
-    validate: () => {
+    validateEmailAndPassword: () => {
         const { formData } = get();
-        const newErrors: Partial<SignupFormData> = {};
+        const { email, password, passwordConfirm } = formData;
+
+        const newErrors: Partial<Record<keyof SignupFormData, string>> = {};
 
         // 이메일 검증
-        if (formData.email === "") {
+        if (email === "") {
             newErrors.email = "이메일을 입력해주세요.";
-        } else if (!validateEmail(formData.email)) {
-            newErrors.email = "이메일 형식에 맞게 입력해주세요";
+        } else if (!validateEmail(email)) {
+            newErrors.email = "이메일 형식에 맞게 입력해주세요.";
         }
 
         // 비밀번호 검증
-        if (formData.password === "") {
+        if (password === "") {
             newErrors.password = "비밀번호를 입력해주세요.";
-        } else if (!validatePassword(formData.password)) {
-            newErrors.password = "비밀번호는 영문, 숫자, 특수문자를 포함한 8자 이상이어야 합니다.";
+        } else if (!validatePassword(password)) {
+            newErrors.password = "비밀번호는 영문, 숫자, 특수문자가 포함된 8자 이상 문자열입니다.";
         }
 
         // 비밀번호 확인 검증
-        if (formData.password && formData.passwordConfirm === "") {
+        if (password && passwordConfirm === "") {
             newErrors.passwordConfirm = "비밀번호 확인을 입력해주세요.";
-        } else if (formData.password !== formData.passwordConfirm) {
-            newErrors.passwordConfirm = "입력한 비밀번호와 동일하게 입력해주세요.";
+        } else if (password !== passwordConfirm) {
+            newErrors.passwordConfirm = "비밀번호와 비밀번호 확인은 동일해야합니다.";
         }
 
-        // 닉네임 검증
-        if (formData.nickname === "") {
-            newErrors.nickname = "이름을 입력해주세요.";
-        }
-
-        // 이메일 인증 검증
-        if (!formData.isEmailVerified) {
-            newErrors.verificationCode = "이메일 인증을 완료해주세요.";
-        } else if (formData.verificationCode === "") {
-            newErrors.verificationCode = "인증 코드를 입력해주세요.";
-        }
-
-        get().setErrors(newErrors);
-        console.log("newErrors:::", newErrors);
-        return Object.keys(newErrors).length === 0 && formData.isEmailVerified;
+        set({ errors: newErrors });
+        return Object.keys(newErrors).length === 0;
     },
 
+    validateBasicInfo: () => {
+        const { formData } = get();
+        const { nickname, level } = formData;
+
+        const newErrors: Partial<Record<keyof SignupFormData, string>> = {};
+
+        // 닉네임 검증
+        if (nickname === "") {
+            newErrors.nickname = "닉네임을 입력해주세요.";
+        }
+
+        // 레벨 검증
+        if (level === null) {
+            newErrors.level = "레벨을 선택해주세요.";
+        }
+
+        set({ errors: newErrors });
+        return Object.keys(newErrors).length === 0;
+    },
+
+    // API Request Data
     getRequestData: () => {
         const { formData } = get();
         return {
             email: formData.email,
             password: formData.password,
-            nickname: formData.nickname,
-            authorLevel: formData.authorLevel,
-            occupation: formData.occupation,
-            topics: formData.topics,
-            visitSource: formData.visitSource,
-            isAdTermsAgreed: formData.isAdTermsAgreed,
         };
     },
 }));

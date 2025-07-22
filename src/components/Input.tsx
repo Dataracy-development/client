@@ -6,11 +6,10 @@ import { useState } from "react";
  * onChange: 값 변경 이벤트
  * placeholder: 플레이스홀더
  * type: 타입
+ * name: 이름
  * isRequired: 필수 여부
  * isErr: 에러 여부
  * errMsg: 에러 메시지
- * isConfirm: Confirm 타입 Input 여부(초록색 Input)
- * confirmMsg: Confirm 타입 Input 메시지(초록색 Input 메시지)
  * children: Input 오른쪽 자식 요소
  * disabled: 비활성화 여부
  * maxLength: 최대 길이
@@ -26,11 +25,10 @@ interface PropsType {
     onChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void;
     placeholder: string;
     type: string;
+    name?: string;
     isRequired?: boolean;
     isErr?: boolean;
     errMsg?: string;
-    isConfirm?: boolean;
-    confirmMsg?: string;
     children?: React.ReactNode;
     disabled?: boolean;
     maxLength?: number;
@@ -38,7 +36,6 @@ interface PropsType {
     onKeyUp?: React.KeyboardEventHandler<HTMLInputElement>;
     onFocus?: React.FocusEventHandler<HTMLInputElement>;
     onBlur?: React.FocusEventHandler<HTMLInputElement>;
-    isPassword?: boolean;
 }
 
 export default function Input({
@@ -49,9 +46,8 @@ export default function Input({
     type,
     isErr = false,
     errMsg,
+    name,
     isRequired = false,
-    isConfirm = false,
-    confirmMsg,
     children,
     disabled = false,
     maxLength,
@@ -59,7 +55,6 @@ export default function Input({
     onKeyUp,
     onFocus,
     onBlur,
-    isPassword = false,
 }: PropsType) {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -68,7 +63,7 @@ export default function Input({
     };
 
     const renderPasswordIcon = () => {
-        if (!isPassword) return children;
+        if (type !== "password") return children;
 
         return showPassword ? (
             <svg
@@ -112,22 +107,10 @@ export default function Input({
                 </div>
             )}
 
-            <div
-                className={`w-full h-[46px] flex gap-3 rounded-xl border px-4 transition-all duration-200 ${
-                    disabled
-                        ? "bg-gray-100 border-gray-200"
-                        : isErr
-                        ? "border-red-500 bg-red-50"
-                        : isConfirm
-                        ? "border-green-500 bg-green-50"
-                        : value
-                        ? "border-[#636ae8] bg-white shadow-sm"
-                        : "border-gray-200 bg-white hover:border-gray-300 focus-within:border-[#636ae8] focus-within:shadow-sm"
-                }`}
-            >
+            <div className={`w-full h-11 flex gap-4 rounded-lg px-4 border ${isErr ? "border-error" : "border-n400"}`}>
                 <input
-                    className="flex-1 h-full border-none text-sm text-gray-800 focus:outline-none placeholder:text-gray-400 bg-transparent"
-                    type={isPassword ? (showPassword ? "text" : "password") : type}
+                    className={`flex-1 h-full border-none text-base font-inter focus:outline-none placeholder:text-[#757575] bg-white autofill:!bg-white ${isErr ? "!border-error" : ""}`}
+                    type={type === "password" ? (showPassword ? "text" : "password") : type}
                     value={value}
                     onChange={onChange}
                     placeholder={placeholder}
@@ -137,28 +120,11 @@ export default function Input({
                     onFocus={onFocus}
                     onBlur={onBlur}
                     maxLength={maxLength}
+                    name={name}
                 />
                 <div className="h-full flex flex-col justify-center">{renderPasswordIcon()}</div>
             </div>
-            {isErr && (
-                <div className="text-red-500 text-xs mt-2 flex items-center gap-1">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1H5C3.89 1 3 1.89 3 3V21C3 22.11 3.89 23 5 23H19C20.11 23 21 22.11 21 21V9ZM19 21H5V3H13V9H19V21Z"
-                            fill="currentColor"
-                        />
-                    </svg>
-                    {errMsg}
-                </div>
-            )}
-            {isConfirm && (
-                <div className="text-green-600 text-xs mt-2 flex items-center gap-1">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 16.17L4.83 12L3.41 13.41L9 19L21 7L19.59 5.59L9 16.17Z" fill="currentColor" />
-                    </svg>
-                    {confirmMsg}
-                </div>
-            )}
+            {isErr && <div className="text-error text-caption mt-1">{errMsg}</div>}
         </div>
     );
 }

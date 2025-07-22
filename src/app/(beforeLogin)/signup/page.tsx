@@ -1,94 +1,60 @@
 "use client";
 
-import { onSignupApi } from "@/apis/authApis";
-import { useMutation } from "@tanstack/react-query";
-import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
-import { useCallback } from "react";
-import OptionalInfoSection from "./_component/OptionalInfoSection";
-import RequiredInfoSection from "./_component/RequiredInfoSection";
+import AuthPageLeftSection from "@/components/Auth/AuthPageLeftSection";
+import Link from "next/link";
+import FirstFunnel from "./_component/FirstFunnel/FirstFunnel";
+import SecondFunnel from "./_component/SecondFunnel";
+import ThirdFunnel from "./_component/ThirdFunnel/ThirdFunnel";
 import { useSignupStore } from "./store/store";
 
+interface Funnel {
+    step: number;
+    title: string;
+    component: React.ReactNode;
+}
+
+const funnels: Funnel[] = [
+    {
+        step: 1,
+        title: "회원가입",
+        component: <FirstFunnel />,
+    },
+    {
+        step: 2,
+        title: "인증하기",
+        component: <SecondFunnel />,
+    },
+    {
+        step: 3,
+        title: "기본정보 입력",
+        component: <ThirdFunnel />,
+    },
+];
+
 export default function EmailSignup() {
-    const { formData, validate, getRequestData, setLoading } = useSignupStore();
-    const router = useRouter();
+    const { currentStep } = useSignupStore();
 
-    const signupMutation = useMutation({
-        mutationFn: onSignupApi,
-        onMutate: (variable) => {
-            console.log("onMutate", variable);
-            setLoading(true);
-        },
-        onError: (error: AxiosError) => {
-            console.log("signupError", error.response?.data);
-            setLoading(false);
-        },
-        onSuccess: (data, variables, context) => {
-            console.log("signupSuccess", data, variables, context);
-            setLoading(false);
-            // 회원가입 성공 로직 추가
-            router.push("/");
-        },
-        onSettled: () => {
-            console.log("signupEnd");
-        },
-    });
-
-    const handleSubmit = useCallback(
-        (e: React.FormEvent) => {
-            e.preventDefault();
-
-            if (validate()) {
-                // 회원가입 API 호출
-                const request = getRequestData();
-                console.log("signup request:::", request);
-                signupMutation.mutate(request);
-            }
-        },
-        [validate, getRequestData, signupMutation]
-    );
+    const currentFunnel = funnels.find((funnel) => funnel.step === currentStep);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#636ae8] via-[#7c82f0] to-[#636ae8] flex items-center justify-center p-4 py-10">
-            <div className="w-full max-w-2xl">
-                {/* Header */}
-                <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold text-white mb-2">회원가입</h1>
-                    <p className="text-white/80 text-sm">Dataracy와 함께 시작해보세요</p>
-                </div>
+        <div className="py-[72px] flex justify-center">
+            <div className="flex w-[1000px] h-[921px] shadow-signup rounded-2xl">
+                <AuthPageLeftSection />
 
-                {/* Form Container */}
-                <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 border border-white/20">
-                    <form onSubmit={handleSubmit}>
-                        <div className="space-y-6">
-                            <RequiredInfoSection />
-                            <OptionalInfoSection />
-                        </div>
+                <div className="flex-1 flex flex-col justify-center gap-[35px] p-12">
+                    <div className="text-center">
+                        <div className="mb-[14px] text-[28px] font-inter font-bold text-[#222222] leading-[34px]">{currentFunnel?.title}</div>
+                        <div className="text-body1 text-[#666666]">회원으로 가입하여 데이터러시를 시작하세요</div>
+                    </div>
 
-                        <div className="mt-8">
-                            <button
-                                type="submit"
-                                className="w-full h-14 bg-gradient-to-r from-[#636ae8] to-[#7c82f0] text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                                disabled={formData.isLoading}
-                            >
-                                {formData.isLoading ? (
-                                    <div className="flex items-center justify-center gap-2">
-                                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                                        <span>가입 중...</span>
-                                    </div>
-                                ) : (
-                                    "회원가입 완료"
-                                )}
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    {currentFunnel?.component}
 
-                {/* Footer */}
-                <div className="text-center mt-6">
-                    <p className="text-white/70 text-sm">
-                        이미 계정이 있으신가요? <button className="text-white font-medium hover:underline transition-colors">로그인하기</button>
-                    </p>
+                    <div className="text-center border-t border-[#e2e8f0] pt-[26px]">
+                        <div className="text-body2 font-inter text-[#666666] mb-3">이미 계정이 있으신가요?</div>
+                        <Link href="/login" className="text-body1 font-semibold text-primary font-inter">
+                            로그인
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

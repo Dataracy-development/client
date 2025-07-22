@@ -139,6 +139,8 @@ export default {
             boxShadow: {
                 filter: "0 0 1px 0 rgba(23, 26, 31, 0.07), 0 0 2px 0 rgba(23, 26, 31, 0.12)",
                 card: "0 2px 5px 0 rgba(23, 26, 31, 0.09), 0 0 2px 0 rgba(23, 26, 31, 0.12)",
+                signup: "0 8px 32px 0 rgba(0, 0, 0, 0.1)",
+                socialButton: "0 1px 3px 0 rgba(0, 0, 0, 0.1)",
             },
             backgroundImage: {},
         },

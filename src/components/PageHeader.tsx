@@ -20,11 +20,11 @@ export default function PageHeader() {
     const currentPage = pageHeaderList.find((item) => item.path === pathname);
 
     return (
-        <div className="w-full h-[190px] banner flex justify-center items-center">
+        <div className="w-full h-[240px] bg-primary flex justify-center items-center">
             {currentPage && (
                 <div className="w-full text-white text-center">
-                    <div className=" font-bold text-[32px] leading-[48px] mb-[1px]">{currentPage.title}</div>
-                    <div className="font-normal text-base leading-[26px]">{currentPage.description}</div>
+                    <div className="text-h4 mb-1">{currentPage.title}</div>
+                    <div className="text-sub1">{currentPage.description}</div>
                 </div>
             )}
         </div>
