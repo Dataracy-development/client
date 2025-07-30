@@ -53,8 +53,7 @@ export default function EmailLoginForm() {
     const loginMutation = useMutation({
         mutationFn: onLoginApi,
         onSuccess: async () => {
-            const refreshToken =
-                "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NTM2NDc3MjMsImV4cCI6MTc4NTE4MzcyMywidHlwZSI6IlJFRlJFU0giLCJ1c2VySWQiOjEsInJvbGUiOiJST0xFX1VTRVIifQ.YfvEiqHqE9W-NweK80SYbhkJO5NSxibNqNd5BTYkMsk";
+            const refreshToken = process.env.NEXT_PUBLIC_REFRESH_TOKEN;
 
             try {
                 const response = await Apis.post("/auth/token/re-issue", null, {
