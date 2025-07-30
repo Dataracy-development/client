@@ -4,6 +4,7 @@ import { onLoginApi } from "@/apis/authApis";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useInput } from "@/hooks/hooks";
+import { Apis } from "@/utils/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -51,14 +52,33 @@ export default function EmailLoginForm() {
 
     const loginMutation = useMutation({
         mutationFn: onLoginApi,
-        onSuccess: async (data) => {
-            document.cookie = `token=${data.accessToken}; path=/; SameSite=Lax; Secure`;
-            await new Promise((resolve) => setTimeout(resolve, 0));
-            console.log("캐시 무효화 직전");
-            queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
-            queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
+        onSuccess: async () => {
+            const refreshToken =
+                "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NTM2NDc3MjMsImV4cCI6MTc4NTE4MzcyMywidHlwZSI6IlJFRlJFU0giLCJ1c2VySWQiOjEsInJvbGUiOiJST0xFX1VTRVIifQ.YfvEiqHqE9W-NweK80SYbhkJO5NSxibNqNd5BTYkMsk";
 
-            router.push("/");
+            try {
+                const response = await Apis.post("/auth/token/re-issue", null, {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${refreshToken}`,
+                        refreshToken: refreshToken,
+                    },
+                });
+
+                console.log("response:::", response);
+            } catch (error) {
+                console.error("Refresh API Error:", error);
+            }
+
+            // console.log("data:::", data);
+            // document.cookie = `token=${data.accessToken}; path=/; SameSite=Lax; Secure`;
+            // await new Promise((resolve) => setTimeout(resolve, 0));
+            // console.log("캐시 무효화 직전");
+            // queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
+            // queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
+
+            // router.push("/");
         },
         onError: (error) => {
             console.error("loginError:::", error);

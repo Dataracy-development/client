@@ -1,10 +1,10 @@
 "use client";
 
-import Checkbox from "@/components/Checkbox";
+import Radio from "@/components/Radio";
 import { useState } from "react";
 
 interface FilterItem {
-    title: string;
+    category: string;
     items: {
         value: string;
         label: string;
@@ -13,7 +13,7 @@ interface FilterItem {
 
 const filterItems: FilterItem[] = [
     {
-        title: "도메인",
+        category: "도메인",
         items: [
             {
                 value: "commerce",
@@ -50,7 +50,7 @@ const filterItems: FilterItem[] = [
         ],
     },
     {
-        title: "분석 목적",
+        category: "분석 목적",
         items: [
             {
                 value: "planning",
@@ -83,7 +83,7 @@ const filterItems: FilterItem[] = [
         ],
     },
     {
-        title: "데이터 출처",
+        category: "데이터 출처",
         items: [
             {
                 value: "public_data",
@@ -108,7 +108,7 @@ const filterItems: FilterItem[] = [
         ],
     },
     {
-        title: "작성자 유형",
+        category: "작성자 유형",
         items: [
             {
                 value: "beginner",
@@ -131,15 +131,15 @@ const filterItems: FilterItem[] = [
 ];
 
 export default function Filter() {
-    const onChange = (value: string, checked: boolean) => {
-        console.log(value, checked);
+    const onChange = (category: string, value: string, checked: boolean) => {
+        console.log(category, value, checked);
     };
 
     return (
         <div className="w-[200px] shadow-filter p-4 rounded-[10px]">
             {filterItems.map((item, idx) => {
                 return (
-                    <div key={item.title}>
+                    <div key={item.category}>
                         <FilterItems items={item} onChange={onChange} />
                         {idx !== filterItems.length - 1 && <div className="w-full h-[1px] bg-n200 mt-[30px] mb-5"></div>}
                     </div>
@@ -149,37 +149,28 @@ export default function Filter() {
     );
 }
 
-const FilterItems = ({ items, onChange: onChangeProps }: { items: FilterItem; onChange: (value: string, checked: boolean) => void }) => {
+const FilterItems = ({ items, onChange: onChangeProps }: { items: FilterItem; onChange: (category: string, value: string, checked: boolean) => void }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [itemList, setItemList] = useState(
-        items.items.map((item) => {
-            return {
-                ...item,
-                checked: false,
-            };
-        })
-    );
+    const [itemList, setItemList] = useState(items.items);
 
-    const onChange = (value: string, checked: boolean) => {
-        setItemList(itemList.map((item) => (item.value === value ? { ...item, checked } : item)));
-        onChangeProps(value, checked);
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // console.log(e.target.checked);
+        // setItemList(itemList.map((item) => (item.value === e.target.value ? { ...item, checked: true } : item)));
+        onChangeProps(items.category, e.target.value, e.target.checked);
     };
 
     return (
         <div>
-            <div className="flex items-center justify-between cursor-pointer  text-base leading-[26px] font-bold mb-4" onClick={() => setIsOpen(!isOpen)}>
-                {items.title}
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: `rotate(${isOpen ? 0 : -180}deg)`, transition: "transform 0.2s" }}>
-                    <path
-                        d="M13.3538 6.35378L8.35378 11.3538C8.30735 11.4003 8.2522 11.4372 8.1915 11.4623C8.13081 11.4875 8.06574 11.5004 8.00003 11.5004C7.93433 11.5004 7.86926 11.4875 7.80856 11.4623C7.74786 11.4372 7.69272 11.4003 7.64628 11.3538L2.64628 6.35378C2.55246 6.25996 2.49976 6.13272 2.49976 6.00003C2.49976 5.86735 2.55246 5.7401 2.64628 5.64628C2.7401 5.55246 2.86735 5.49976 3.00003 5.49976C3.13272 5.49976 3.25996 5.55246 3.35378 5.64628L8.00003 10.2932L12.6463 5.64628C12.6927 5.59983 12.7479 5.56298 12.8086 5.53784C12.8693 5.5127 12.9343 5.49976 13 5.49976C13.0657 5.49976 13.1308 5.5127 13.1915 5.53784C13.2522 5.56298 13.3073 5.59983 13.3538 5.64628C13.4002 5.69274 13.4371 5.74789 13.4622 5.80859C13.4874 5.86928 13.5003 5.93434 13.5003 6.00003C13.5003 6.06573 13.4874 6.13079 13.4622 6.19148C13.4371 6.25218 13.4002 6.30733 13.3538 6.35378Z"
-                        fill="#8F95B2"
-                    />
+            <div className="flex items-center justify-between cursor-pointer text-sub1 mb-5" onClick={() => setIsOpen(!isOpen)}>
+                {items.category}
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ transform: `rotate(${isOpen ? 0 : -180}deg)`, transition: "transform 0.2s" }}>
+                    <path d="M12 15.4L6 9.4L7.4 8L12 12.6L16.6 8L18 9.4L12 15.4Z" fill="#1D1B20" />
                 </svg>
             </div>
             {isOpen && (
                 <div className="flex flex-col gap-2">
                     {itemList.map((item) => (
-                        <Checkbox key={item.value} value={item.value} label={item.label} checked={item.checked} onClick={onChange} />
+                        <Radio key={item.value} value={item.value} name={items.category} label={item.label} onChange={onChange} />
                     ))}
                 </div>
             )}

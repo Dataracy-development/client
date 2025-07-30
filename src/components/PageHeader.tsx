@@ -13,6 +13,11 @@ const pageHeaderList = [
         title: "프로젝트 탐색",
         description: "데이터 분석 전문가들의 실제 프로젝트를 살펴보고, 피드백을 통해 함께 성장하세요",
     },
+    {
+        path: "/project/create",
+        title: "프로젝트 작성",
+        description: "여러분의 프로젝트를 공유하고, 피드백을 통해 함께 성장하세요!",
+    },
 ];
 
 export default function PageHeader() {

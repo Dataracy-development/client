@@ -23,6 +23,23 @@ body {
     background: linear-gradient(90deg, #636ae8ff 0%, #7f55e0ff 100%);
 }
 
+input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+}
+input[type="radio"]:checked {
+    background-color: #3423a6;
+    border: 4px solid #fff;
+    box-shadow: 0 0 0 1px #3423a6;
+}
+
 /* 자동완성 배경색 제어 */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
