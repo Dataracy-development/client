@@ -1,31 +1,33 @@
 import Link from "next/link";
-import { ItemProps } from "./_types/type";
+import { Project } from "../../_apis/apis";
 
-export default function Item({ item }: { item: ItemProps }) {
+export default function Item({ item }: { item: Project }) {
     return (
         <Link href={`/project/1`}>
             <div className="w-full h-[200px] bg-white rounded-2xl border border-n200 flex cursor-pointer relative">
                 <div className="w-[250px] h-full flex items-center justify-center rounded-l-2xl overflow-hidden bg-gray-200 text-gray-500">THUMBNAIL</div>
 
-                <div className="p-[15px] flex-1">
-                    <div className="flex items-center gap-1 mb-3">
-                        {item.tags.map((tag) => (
-                            <div key={tag} className={`w-fit h-[26px] px-2 text-caption leading-[26px] rounded-2xl bg-n300 text-primary`}>
-                                {tag}
-                            </div>
-                        ))}
+                <div className="p-[15px] flex-1 flex flex-col justify-between">
+                    <div>
+                        <div className="flex items-center gap-1 mb-3">
+                            {[item.analysisPurposeLabel, item.dataSourceLabel, item.authorLevelLabel].map((tag) => (
+                                <div key={tag} className={`w-fit h-[26px] px-2 text-caption leading-[26px] rounded-2xl bg-n300 text-primary`}>
+                                    {tag}
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="text-h5 mb-3">{item.title}</div>
+
+                        <div className="text-body2 mb-3">{item.content}</div>
                     </div>
-
-                    <div className="text-h5 mb-3">{item.title}</div>
-
-                    <div className="text-body2 mb-3">{item.description}</div>
 
                     <div className="w-full flex justify-between items-center">
                         <div className="flex items-center gap-2">
                             <div className="w-9 h-9 rounded-full bg-gray-200"></div>
                             <div>
-                                <div className="text-caption">Job</div>
-                                <div className="text-button mt-[5px]">Name</div>
+                                <div className="text-caption">{item.topicLabel}</div>
+                                <div className="text-button mt-[5px]">{item.username}</div>
                             </div>
                         </div>
                         {/* Counting */}
@@ -41,7 +43,7 @@ export default function Item({ item }: { item: ItemProps }) {
                                     />
                                 </svg>
 
-                                <div className="text-sm leading-[17px] font-normal mt-[5px] text-center">{item.commentCnt}</div>
+                                <div className="text-sm leading-[17px] font-normal mt-[5px] text-center">{item.commentCount}</div>
                             </div>
                             <div>
                                 <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,7 +62,7 @@ export default function Item({ item }: { item: ItemProps }) {
                                         </clipPath>
                                     </defs>
                                 </svg>
-                                <div className="text-sm leading-[17px] font-normal mt-[5px] text-center">{item.likedCnt}</div>
+                                <div className="text-sm leading-[17px] font-normal mt-[5px] text-center">{item.likeCount}</div>
                             </div>
                             <div>
                                 <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -86,7 +88,7 @@ export default function Item({ item }: { item: ItemProps }) {
                                         </clipPath>
                                     </defs>
                                 </svg>
-                                <div className="text-sm leading-[17px] font-normal mt-[5px] text-center">{item.viewCnt}</div>
+                                <div className="text-sm leading-[17px] font-normal mt-[5px] text-center">{item.viewCount}</div>
                             </div>
                         </div>
                     </div>

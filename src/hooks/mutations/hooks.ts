@@ -50,15 +50,15 @@ export const useCreateMutation = <TData, TVariables>(
             options.onMutate?.(variables);
         },
         onSuccess: (data, variables, context) => {
-            console.log(`${mutationName}Success`, data, variables, context);
+            console.log(`${mutationName} Success - 데이터:`, data);
             options.onSuccess?.(data, variables, context);
         },
         onError: (error: AxiosError) => {
-            console.log(`${mutationName}Error`, error.response?.data);
+            console.log(`${mutationName} Error - 에러 객체:`, error);
             options.onError?.(error);
         },
         onSettled: () => {
-            console.log(`${mutationName}End`);
+            console.log(`${mutationName} Settled`);
             options.onSettled?.();
         },
     });

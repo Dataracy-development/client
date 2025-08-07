@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import Button from "../Button";
 
 export default function Header() {
     const router = useRouter();
     const pathname = usePathname();
 
-    if (pathname === "/signup" || pathname === "/login") return null;
+    if (pathname === "/signup" || pathname === "/login" || pathname === "/find-pw") return null;
 
     return (
         <div className="w-full h-[105px]">
@@ -41,9 +42,7 @@ export default function Header() {
                         <input type="text" className="flex-1 focus:outline-none h-full text-body2 bg-n200  leading-[45px]" placeholder="프로젝트, 데이터셋 검색" />
                     </div>
 
-                    <button className="w-[140px] h-[45px] rounded-xl bg-secondary text-name  text-white" onClick={() => router.push("/login")}>
-                        시작하기
-                    </button>
+                    <Button label="시작하기" className="w-[100px] !h-[45px]" onClick={() => router.push("/login")} />
                 </div>
             </div>
         </div>

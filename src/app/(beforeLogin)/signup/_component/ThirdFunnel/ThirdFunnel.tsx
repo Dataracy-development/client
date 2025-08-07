@@ -5,6 +5,8 @@ import Input from "@/components/Input";
 import Selectbox from "@/components/Selectbox";
 import Spinner from "@/components/Spinner";
 import { useSignupMutation } from "@/hooks/mutations/useSignupMutation";
+import { Apis } from "@/utils/api";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useSignupStore } from "../../store/store";
@@ -14,6 +16,7 @@ import { useGetOptionsQueries } from "./queries/queries";
 export default function ThirdFunnel() {
     const { formData, setField, errors, validateBasicInfo, setError } = useSignupStore();
     const router = useRouter();
+    const queryClient = useQueryClient();
 
     // 옵션 조회
     const results = useGetOptionsQueries();
@@ -35,9 +38,31 @@ export default function ThirdFunnel() {
 
     // 회원가입
     const { mutate: signup } = useSignupMutation({
-        onSuccess: () => {
-            alert("회원가입에 성공했습니다.");
-            router.push("/");
+        onSuccess: async () => {
+            const refreshToken = process.env.NEXT_PUBLIC_TEMP_REFRESH_TOKEN;
+
+            try {
+                const response = await Apis.post(
+                    "/auth/dev/token/re-issue",
+                    { refreshToken },
+                    {
+                        withCredentials: true,
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${refreshToken}`,
+                        },
+                    }
+                );
+
+                document.cookie = `token=${response.data.accessToken}; path=/; SameSite=Lax; Secure`;
+                await new Promise((resolve) => setTimeout(resolve, 0));
+                queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
+                queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
+
+                router.push("/");
+            } catch (error) {
+                console.error("Refresh API Error:", error);
+            }
         },
         onError: (error) => {
             console.log("회원가입 실패", error);

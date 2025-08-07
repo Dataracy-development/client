@@ -53,31 +53,42 @@ export default function EmailLoginForm() {
     const loginMutation = useMutation({
         mutationFn: onLoginApi,
         onSuccess: async () => {
-            const refreshToken = process.env.NEXT_PUBLIC_REFRESH_TOKEN;
+            // 쿠키에서 refreshToken 가져오기
+            const getCookie = (name: string) => {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop()?.split(";").shift();
+                return null;
+            };
+
+            let refreshToken = getCookie("refreshToken");
+            if (!refreshToken) {
+                refreshToken = process.env.NEXT_PUBLIC_TEMP_REFRESH_TOKEN;
+            }
 
             try {
-                const response = await Apis.post("/auth/token/re-issue", null, {
-                    withCredentials: true,
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${refreshToken}`,
-                        refreshToken: refreshToken,
-                    },
-                });
+                const response = await Apis.post(
+                    "/auth/dev/token/re-issue",
+                    { refreshToken },
+                    {
+                        withCredentials: true,
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${refreshToken}`,
+                        },
+                    }
+                );
 
-                console.log("response:::", response);
+                document.cookie = `token=${response.data.accessToken}; path=/; SameSite=Lax; Secure`;
+                document.cookie = `refreshToken=${refreshToken}; path=/; SameSite=Lax; Secure`;
+                await new Promise((resolve) => setTimeout(resolve, 0));
+                queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
+                queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
+
+                router.push("/");
             } catch (error) {
                 console.error("Refresh API Error:", error);
             }
-
-            // console.log("data:::", data);
-            // document.cookie = `token=${data.accessToken}; path=/; SameSite=Lax; Secure`;
-            // await new Promise((resolve) => setTimeout(resolve, 0));
-            // console.log("캐시 무효화 직전");
-            // queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
-            // queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
-
-            // router.push("/");
         },
         onError: (error) => {
             console.error("loginError:::", error);
@@ -100,14 +111,12 @@ export default function EmailLoginForm() {
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-[14px]">
-            <Input label="이메일" name="email" {...email} placeholder="이메일을 입력해주세요." type="email" isRequired isErr={!!isErrors.email} errMsg={errorMessages.email} />
-            <Input label="비밀번호" name="password" {...password} placeholder="비밀번호를 입력해주세요." type="password" isRequired isErr={!!isErrors.password} errMsg={errorMessages.password} />
+            <Input label="이메일" name="email" {...email} placeholder="이메일을 입력해주세요." type="email" isErr={!!isErrors.email} errMsg={errorMessages.email} />
+            <Input label="비밀번호" name="password" {...password} placeholder="비밀번호를 입력해주세요." type="password" isErr={!!isErrors.password} errMsg={errorMessages.password} />
 
-            <div className="flex justify-end items-center my-3">
-                <Link href="/find-password" className="text-body2 font-inter text-[#666666]">
-                    비밀번호 찾기
-                </Link>
-            </div>
+            <Link href="/find-pw" className="text-body2 font-inter text-primary my-[26px]">
+                비밀번호를 잊으셨나요?
+            </Link>
 
             <Button label="로그인" type="submit" />
         </form>

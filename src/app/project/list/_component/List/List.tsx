@@ -1,7 +1,9 @@
 "use client";
 
 import Pagination from "@/components/Pagination";
-import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { onSearchProjectsApi } from "../../_apis/apis";
+import useProjectListStore from "../../store/projectListStore";
 import { ItemProps } from "./_types/type";
 import Item from "./Item";
 
@@ -74,22 +76,27 @@ const items: ItemProps[] = [
 ];
 
 export default function List() {
-    const [page, setPage] = useState(1);
-    const [viewPerPage, setViewPerPage] = useState(10);
-    const [total, setTotal] = useState(100);
+    const { filter, pagable, setPage: setPageStore } = useProjectListStore();
 
-    const handlePageChange = (page: number) => {
-        setPage(page);
-    };
+    const { data, isPending, isError } = useQuery({
+        queryKey: [
+            "getProjects",
+            {
+                webRequest: filter,
+                pagable,
+            },
+        ],
+        queryFn: onSearchProjectsApi,
+    });
 
     return (
         <div className="flex flex-col gap-5">
-            {items.map((item) => (
+            {data?.data.content.map((item) => (
                 <Item key={item.id} item={item} />
             ))}
 
             <div className="flex justify-center mt-5">
-                <Pagination page={page} viewPerPage={viewPerPage} total={total} onChange={handlePageChange} />
+                <Pagination page={pagable.page} viewPerPage={pagable.size} total={data?.data.totalElements} onChange={(page) => setPageStore(page)} />
             </div>
         </div>
     );

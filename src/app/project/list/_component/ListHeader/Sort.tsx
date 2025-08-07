@@ -1,33 +1,48 @@
 "use client";
 
 import { useState } from "react";
+import useProjectListStore, { SortType } from "../../store/projectListStore";
 
 export default function Sort() {
-    const [sortItems, setSortItems] = useState([
+    const { setSortType, setPage } = useProjectListStore();
+
+    const [sortItems, setSortItems] = useState<{ label: string; value: SortType; isActive: boolean }[]>([
         {
             label: "최신순",
-            value: "latest",
+            value: "LATEST",
             isActive: true,
         },
         {
             label: "추천순",
-            value: "recommend",
+            value: "RECOMMEND",
             isActive: false,
         },
         {
             label: "조회순",
-            value: "view",
+            value: "VIEW",
             isActive: false,
         },
         {
-            label: "댓글 많은 순",
-            value: "feedback",
+            label: "피드백 많은 순",
+            value: "MOST_FEEDBACK",
+            isActive: false,
+        },
+        {
+            label: "피드백 적은 순",
+            value: "LEAST_FEEDBACK",
+            isActive: false,
+        },
+        {
+            label: "오래된 순",
+            value: "OLDEST",
             isActive: false,
         },
     ]);
 
-    const onClick = (value: string) => {
+    const onClick = (value: SortType) => {
         setSortItems(sortItems.map((item) => ({ ...item, isActive: item.value === value })));
+        setPage(1);
+        setSortType(value);
     };
 
     return (

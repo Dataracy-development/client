@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 export default function Footer() {
     const pathname = usePathname();
 
-    if (pathname === "/signup" || pathname === "/login") return null;
+    if (pathname === "/signup" || pathname === "/login" || pathname === "/find-pw") return null;
     return (
         <footer className="w-full h-[400px] bg-primary flex items-center justify-center text-white">
             <div className="max-w-[1200px] w-full px-2.5 max-h-[283px] h-full py-2.5 flex flex-col justify-between">

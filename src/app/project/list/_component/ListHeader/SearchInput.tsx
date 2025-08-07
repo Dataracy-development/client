@@ -1,5 +1,24 @@
+"use client";
+
+import { useState } from "react";
+import useProjectListStore from "../../store/projectListStore";
+
 // 공통으로 이전 예정
 export default function SearchInput() {
+    const { setKeyword: setKeywordStore, setPage } = useProjectListStore();
+
+    const [keyword, setKeyword] = useState("");
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setKeyword(e.target.value);
+    };
+
+    const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            setPage(1);
+            setKeywordStore(keyword);
+        }
+    };
+
     return (
         <div className="w-[500px] h-[45px] px-3 bg-n200 rounded-xl flex items-center gap-[15px]">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -9,7 +28,7 @@ export default function SearchInput() {
                 />
             </svg>
 
-            <input type="text" className="flex-1 focus:outline-none h-full text-body2 leading-[45px] bg-n200" placeholder="Search" />
+            <input type="text" className="flex-1 focus:outline-none h-full text-body2 leading-[45px] bg-n200" placeholder="프로젝트 검색" value={keyword} onChange={onChange} onKeyDown={onKeyDown} />
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import PageHeader from "@/components/PageHeader";
-import Filter from "./_component/Filter";
+import Filter from "./_component/Filter/Filter";
 import List from "./_component/List/List";
 import ListHeader from "./_component/ListHeader/ListHeader";
 

@@ -1,5 +1,5 @@
+import { onGetDomainApi, onGetLevelApi, onGetOccupationApi, onGetVisitSourceApi } from "@/apis/referenceDataApis";
 import { useQueries } from "@tanstack/react-query";
-import { onGetDomainApi, onGetLevelApi, onGetOccupationApi, onGetVisitSourceApi } from "../apis/apis";
 
 export const useGetOptionsQueries = () => {
     return useQueries({

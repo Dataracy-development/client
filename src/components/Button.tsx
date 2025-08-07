@@ -15,7 +15,7 @@ interface ButtonProps {
 
 export default function Button({ label, onClick, type = "button", disabled = false, className = "" }: ButtonProps) {
     return (
-        <button className={`bg-secondary text-white text-body1 font-semibold h-[52px] w-full rounded-lg font-inter ${className}`} onClick={onClick} type={type} disabled={disabled}>
+        <button className={`bg-secondary text-white text-button rounded-xl h-[50px] ${className}`} onClick={onClick} type={type} disabled={disabled}>
             {label}
         </button>
     );
