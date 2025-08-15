@@ -1,10 +1,11 @@
-import { useSpinner } from "@/components/Spinner";
+import { removeSpinnerFromElement, renderSpinnerInElement, useSpinner } from "@/components/Spinner";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
 // spinner가 포함된 mutation wrapper
 export const useMutationWithSpinner = <TData, TVariables>(
     mutationFn: (variables: TVariables) => Promise<TData>,
+    spinnerTargetElement?: HTMLElement | React.RefObject<HTMLElement>,
     options: {
         onMutate?: (variables: TVariables) => void;
         onSuccess?: (data: TData, variables: TVariables, context: any) => void;
@@ -17,7 +18,13 @@ export const useMutationWithSpinner = <TData, TVariables>(
     return useMutation({
         mutationFn,
         onMutate: (variables) => {
-            openSpinner();
+            if (spinnerTargetElement) {
+                renderSpinnerInElement(spinnerTargetElement, {
+                    hideContent: true,
+                });
+            } else {
+                openSpinner();
+            }
             options.onMutate?.(variables);
         },
         onSuccess: (data, variables, context) => {
@@ -27,7 +34,11 @@ export const useMutationWithSpinner = <TData, TVariables>(
             options.onError?.(error, variables, context);
         },
         onSettled: (data, error, variables, context) => {
-            closeSpinner();
+            if (spinnerTargetElement) {
+                removeSpinnerFromElement(spinnerTargetElement, true);
+            } else {
+                closeSpinner();
+            }
             options.onSettled?.(data, error, variables, context);
         },
     });
@@ -42,9 +53,10 @@ export const useCreateMutation = <TData, TVariables>(
         onSuccess?: (data: TData, variables: TVariables, context: any) => void;
         onError?: (error: AxiosError) => void;
         onSettled?: () => void;
-    } = {}
+    } = {},
+    spinnerTargetElement?: HTMLElement | React.RefObject<HTMLElement>
 ) => {
-    return useMutationWithSpinner(mutationFn, {
+    return useMutationWithSpinner(mutationFn, spinnerTargetElement, {
         onMutate: (variables) => {
             console.log(`${mutationName} onMutate`, variables);
             options.onMutate?.(variables);

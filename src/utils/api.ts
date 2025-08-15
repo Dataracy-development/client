@@ -21,7 +21,6 @@ export const Apis = {
 
         if (!token) {
             throw new Error("토큰이 없습니다.");
-            return null;
         }
 
         const res = await api.get(url, {
@@ -39,7 +38,6 @@ export const Apis = {
 
         if (!token) {
             throw new Error("토큰이 없습니다.");
-            return null;
         }
 
         const res = await api.post(url, payload, {
@@ -57,7 +55,6 @@ export const Apis = {
 
         if (!token) {
             throw new Error("토큰이 없습니다.");
-            return null;
         }
 
         const res = await api.put(url, payload, {
@@ -75,7 +72,6 @@ export const Apis = {
 
         if (!token) {
             throw new Error("토큰이 없습니다.");
-            return null;
         }
 
         const res = await api.delete(url, {

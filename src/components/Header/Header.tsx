@@ -22,10 +22,7 @@ export default function Header() {
                             <Link href="/project/list">프로젝트</Link>
                         </div>
                         <div className="px-4 text-n500 text-button ">
-                            <Link href="/">데이터</Link>
-                        </div>
-                        <div className="px-4 text-n500 text-button ">
-                            <Link href="/">스토어</Link>
+                            <Link href="/dataset/list">데이터</Link>
                         </div>
                     </div>
                 </div>

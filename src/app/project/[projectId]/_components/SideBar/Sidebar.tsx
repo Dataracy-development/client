@@ -1,12 +1,23 @@
+import { Project } from "@/types/commonTypes";
+import ConnectedDataSets from "./ConnectedDataSets";
 import CreatorInfo from "./CreatorInfo";
 import FollowBtn from "./FollowBtn";
 
-export default function Sidebar() {
+export default function Sidebar({ data }: { data: Project }) {
     return (
         <div className="w-[360px]">
-            <CreatorInfo />
-
+            <CreatorInfo
+                creator={{
+                    name: data.username,
+                    occupation: data.occupationLabel,
+                    description: data.userIntroductionText,
+                    createdAt: data.createdAt.slice(0, 10),
+                    viewCount: data.viewCount,
+                    likedCount: data.likeCount,
+                }}
+            />
             <FollowBtn />
+            <ConnectedDataSets data={data.connectedDataSets} />
         </div>
     );
 }

@@ -10,7 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { useSignupStore } from "../../store/store";
-import { SignupRequest } from "./apis/apis";
+import { SignupRequest } from "./_apis/apis";
 import { useGetOptionsQueries } from "./queries/queries";
 
 export default function ThirdFunnel() {

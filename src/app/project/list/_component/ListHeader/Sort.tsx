@@ -14,22 +14,22 @@ export default function Sort() {
         },
         {
             label: "추천순",
-            value: "RECOMMEND",
+            value: "MOST_LIKED",
             isActive: false,
         },
         {
             label: "조회순",
-            value: "VIEW",
+            value: "MOST_VIEWED",
             isActive: false,
         },
         {
             label: "피드백 많은 순",
-            value: "MOST_FEEDBACK",
+            value: "MOST_COMMENTED",
             isActive: false,
         },
         {
             label: "피드백 적은 순",
-            value: "LEAST_FEEDBACK",
+            value: "LEAST_COMMENTED",
             isActive: false,
         },
         {

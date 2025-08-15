@@ -1,81 +1,16 @@
 "use client";
 
 import Pagination from "@/components/Pagination";
+import Spinner from "@/components/Spinner";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import { onSearchProjectsApi } from "../../_apis/apis";
 import useProjectListStore from "../../store/projectListStore";
-import { ItemProps } from "./_types/type";
 import Item from "./Item";
 
-const items: ItemProps[] = [
-    {
-        id: 1,
-        thumbnail: "https://picsum.photos/200/300",
-        tags: ["커머스", "실무자", "Python"],
-        title: "온라인 쇼핑몰 고객 행동 패턴 분석 및 추천 시스템 구축",
-        description: "3년간의 고객 구매 데이터를 활용해 RFM 분석과 협업 필터링을 통한 개인화 추천 시스템을 구축했습니다. 매출 15% 증가라는 실험적 성과를 달성한 프로젝트입니다.",
-        isLiked: false,
-        userImg: "https://picsum.photos/200/300",
-        userName: "윤제혁",
-        commentCnt: 10,
-        likedCnt: 10,
-        viewCnt: 10,
-    },
-    {
-        id: 2,
-        thumbnail: "https://picsum.photos/200/300",
-        tags: ["헬스케어", "초심자", "R"],
-        title: "병원 대기시간 예측 모델링을 통한 환자 만족도 개선",
-        description: "서울대병원 외래진료 데이터를 활용한 대기시간 예측 프로젝트입니다. Random Forest와 XGBoost를 비교 분석하여 최적의 모델을 선정했습니다.",
-        isLiked: false,
-        userImg: "https://picsum.photos/200/300",
-        userName: "박준형",
-        commentCnt: 10,
-        likedCnt: 10,
-        viewCnt: 10,
-    },
-    {
-        id: 3,
-        thumbnail: "https://picsum.photos/200/300",
-        tags: ["교통", "전문가", "Python"],
-        title: "서울시 지하철 혼잡도 실시간 대시보드 구축",
-        description: "지하철 승하차 데이터와 실시간 운행정보를 결합하여 혼잡도를 예측하는 대시보드를 만들었습니다. Streamlit과 Plotly를 활용한 인터랙티브 시각화가 핵심입니다.",
-        isLiked: false,
-        userImg: "https://picsum.photos/200/300",
-        userName: "부형석",
-        commentCnt: 10,
-        likedCnt: 10,
-        viewCnt: 10,
-    },
-    {
-        id: 4,
-        thumbnail: "https://picsum.photos/200/300",
-        tags: ["금융", "실무자", "SQL"],
-        title: "신용카드 이상거래 탐지 시스템 개발",
-        description: "머신러닝 기반 이상거래 탐지 모델을 개발하여 금융사기를 예방하는 프로젝트입니다. 정확도 95% 이상의 성능을 달성했으며, 실제 업무에 적용 중입니다.",
-        isLiked: false,
-        userImg: "https://picsum.photos/200/300",
-        userName: "심동화",
-        commentCnt: 10,
-        likedCnt: 10,
-        viewCnt: 10,
-    },
-    {
-        id: 5,
-        thumbnail: "https://picsum.photos/200/300",
-        tags: ["엔터테인먼트", "초심자", "Python"],
-        title: "넷플릭스 콘텐츠 추천 알고리즘 분석",
-        description: "넷플릭스 데이터를 크롤링하여 콘텐츠 추천 패턴을 분석했습니다. 장르별 선호도와 시청 패턴을 시각화하여 인사이트를 도출했습니다.",
-        isLiked: false,
-        userImg: "https://picsum.photos/200/300",
-        userName: "홍길동",
-        commentCnt: 10,
-        likedCnt: 10,
-        viewCnt: 10,
-    },
-];
-
 export default function List() {
+    const router = useRouter();
+
     const { filter, pagable, setPage: setPageStore } = useProjectListStore();
 
     const { data, isPending, isError } = useQuery({
@@ -89,6 +24,25 @@ export default function List() {
         queryFn: onSearchProjectsApi,
     });
 
+    console.log(data);
+    if (isPending) return <Spinner />;
+    if (isError) return <div className="flex justify-center items-center h-full">Error</div>;
+
+    if (data?.data.content.length === 0)
+        return (
+            <div className="flex flex-col justify-center items-center mt-24">
+                <div className="mb-6">
+                    <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center animate-pulse">
+                        <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-700 mb-2">검색 결과가 없습니다</h3>
+                <p className="text-gray-500 text-center max-w-md leading-relaxed">다른 키워드로 검색해보시거나 필터를 조정해보세요</p>
+            </div>
+        );
+
     return (
         <div className="flex flex-col gap-5">
             {data?.data.content.map((item) => (
@@ -98,6 +52,20 @@ export default function List() {
             <div className="flex justify-center mt-5">
                 <Pagination page={pagable.page} viewPerPage={pagable.size} total={data?.data.totalElements} onChange={(page) => setPageStore(page)} />
             </div>
+
+            <button
+                className="fixed right-[calc((100%-1200px)/2+40px)] bottom-[40px] w-[70px] h-[70px] bg-primary rounded-full flex items-center justify-center hover:bg-[#27198E]"
+                onClick={() => {
+                    router.push("/project/create");
+                }}
+            >
+                <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M27.5775 7.53112L21.469 1.42115C21.2658 1.21797 21.0247 1.0568 20.7592 0.946835C20.4938 0.836871 20.2093 0.780273 19.922 0.780273C19.6347 0.780273 19.3502 0.836871 19.0847 0.946835C18.8193 1.0568 18.5781 1.21797 18.375 1.42115L1.51622 18.2813C1.31221 18.4837 1.15046 18.7246 1.04038 18.9901C0.930307 19.2555 0.874093 19.5402 0.875011 19.8276V25.9376C0.875011 26.5177 1.10548 27.0741 1.51571 27.4844C1.92595 27.8946 2.48235 28.1251 3.06251 28.1251H9.17247C9.45984 28.126 9.74453 28.0698 10.01 27.9597C10.2754 27.8496 10.5164 27.6879 10.7188 27.4838L27.5775 10.6251C27.7807 10.4219 27.9419 10.1808 28.0519 9.91532C28.1618 9.64989 28.2184 9.3654 28.2184 9.07809C28.2184 8.79078 28.1618 8.50628 28.0519 8.24085C27.9419 7.97542 27.7807 7.73425 27.5775 7.53112ZM9.17247 25.9376H3.06251V19.8276L15.0938 7.79635L21.2037 13.9063L9.17247 25.9376ZM22.75 12.3587L16.64 6.25006L19.9213 2.96881L26.0313 9.0774L22.75 12.3587Z"
+                        fill="white"
+                    />
+                </svg>
+            </button>
         </div>
     );
 }

@@ -1,3 +1,4 @@
+import Button from "@/components/Button";
 import DatasetRow from "./DatasetRow";
 
 export default function PopularDatasets() {
@@ -23,7 +24,7 @@ export default function PopularDatasets() {
                 </div>
 
                 <div className="flex justify-center mt-10">
-                    <button className="w-[140px] h-[60px] bg-secondary text-button text-white rounded-2xl">더 살펴보기</button>
+                    <Button label="더 살펴보기" className="w-[140px] h-[60px] rounded-2xl" />
                 </div>
             </div>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { onCheckEmailVerificationCodeApi, onSendEmailVerificationCodeApi } from "@/apis/authApis";
-import { onSignupApi } from "@/app/(beforeLogin)/signup/_component/ThirdFunnel/apis/apis";
+import { onSignupApi } from "@/app/(beforeLogin)/signup/_component/ThirdFunnel/_apis/apis";
 import { useCreateMutation } from "./hooks";
 import { UseMutationProps } from "./type";
 

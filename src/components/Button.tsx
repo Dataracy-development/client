@@ -11,11 +11,12 @@ interface ButtonProps {
     type?: "submit" | "button" | "reset" | undefined;
     disabled?: boolean;
     className?: string;
+    ref?: React.RefObject<HTMLButtonElement>;
 }
 
-export default function Button({ label, onClick, type = "button", disabled = false, className = "" }: ButtonProps) {
+export default function Button({ label, onClick, type = "button", disabled = false, className = "", ref }: ButtonProps) {
     return (
-        <button className={`bg-secondary text-white text-button rounded-xl h-[50px] ${className}`} onClick={onClick} type={type} disabled={disabled}>
+        <button ref={ref} className={`bg-secondary text-white text-button rounded-xl h-[50px] hover:bg-[#e6576f] ${className}`} onClick={onClick} type={type} disabled={disabled}>
             {label}
         </button>
     );

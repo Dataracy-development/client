@@ -60,25 +60,25 @@ export default function Filter() {
         if (results[0].data) {
             setDomains({
                 category: "도메인",
-                items: results[0].data.data.topics.map((item) => ({ id: item.id, value: item.value, label: item.label })),
+                items: [{ id: 0, value: "전체", label: "전체" }, ...results[0].data.data.topics.map((item) => ({ id: item.id, value: item.value, label: item.label }))],
             });
         }
         if (results[1].data) {
             setAnalysisPurposes({
                 category: "분석 목적",
-                items: results[1].data.data.analysisPurposes.map((item) => ({ id: item.id, value: item.value, label: item.label })),
+                items: [{ id: 0, value: "전체", label: "전체" }, ...results[1].data.data.analysisPurposes.map((item) => ({ id: item.id, value: item.value, label: item.label }))],
             });
         }
         if (results[2].data) {
             setDataSources({
                 category: "데이터 출처",
-                items: results[2].data.data.dataSources.map((item) => ({ id: item.id, value: item.value, label: item.label })),
+                items: [{ id: 0, value: "전체", label: "전체" }, ...results[2].data.data.dataSources.map((item) => ({ id: item.id, value: item.value, label: item.label }))],
             });
         }
         if (results[3].data) {
             setAuthorLevels({
                 category: "작성자 유형",
-                items: results[3].data.data.authorLevels.map((item) => ({ id: item.id, value: item.value, label: item.label })),
+                items: [{ id: 0, value: "전체", label: "전체" }, ...results[3].data.data.authorLevels.map((item) => ({ id: item.id, value: item.value, label: item.label }))],
             });
         }
     }, [results[0].data, results[1].data, results[2].data, results[3].data]);
@@ -109,7 +109,7 @@ const FilterItems = ({ items, onChange: onChangeProps }: { items: FilterItem; on
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const id = items.items.find((item) => item.value === e.target.value)?.id;
-        if (id) onChangeProps(items.category, id);
+        if (id !== undefined) onChangeProps(items.category, id);
     };
 
     return (

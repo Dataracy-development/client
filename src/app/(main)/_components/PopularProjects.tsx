@@ -1,6 +1,11 @@
+"use client";
+
+import Button from "@/components/Button";
+import { useRouter } from "next/navigation";
 import ProjectCard from "./ProjectCard";
 
 export default function PopularProjects() {
+    const router = useRouter();
     return (
         <div className="max-w-[1200px] w-full mx-auto">
             <div className="text-h3 mb-2.5 text-center">인기 프로젝트</div>
@@ -12,7 +17,7 @@ export default function PopularProjects() {
             </div>
 
             <div className="flex justify-center mt-10">
-                <button className="w-[140px] h-[60px] bg-secondary text-button text-white rounded-2xl">더 살펴보기</button>
+                <Button label="더 살펴보기" className="w-[140px] h-[60px] rounded-2xl" onClick={() => router.push("/project/list")} />
             </div>
         </div>
     );
