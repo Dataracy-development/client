@@ -15,9 +15,9 @@ type Props = {
 export default function ToastEditorWrapper({ editorRef, placeholder, onChange, isErr = false, errMsg = "", initialValue }: Props) {
     useEffect(() => {
         if (isErr) {
-            document.documentElement.querySelector(".toastui-editor-defaultUI")?.classList.add("border-taskmateRed");
+            document.documentElement.querySelector(".toastui-editor-defaultUI")?.classList.add("border-error");
         } else {
-            document.documentElement.querySelector(".toastui-editor-defaultUI")?.classList.remove("border-taskmateRed");
+            document.documentElement.querySelector(".toastui-editor-defaultUI")?.classList.remove("border-error");
         }
     }, [isErr]);
 
@@ -49,7 +49,7 @@ export default function ToastEditorWrapper({ editorRef, placeholder, onChange, i
                     onChange(markdown);
                 }}
             />
-            {isErr && <div className="text-red text-xs mt-2">{errMsg}</div>}
+            {isErr && <div className="text-red-500 text-xs mt-2">{errMsg}</div>}
         </div>
     );
 }

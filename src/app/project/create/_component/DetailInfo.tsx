@@ -10,7 +10,7 @@ const ToastEditor = dynamic(() => import("@/components/Editor/ToastEditorWrapper
     loading: () => <Spinner />,
 });
 export default function DetailInfo() {
-    const { setField } = useCreateProjectStore();
+    const { setField, errors } = useCreateProjectStore();
     const editorRef = useRef<any>(null);
 
     return (
@@ -27,7 +27,9 @@ export default function DetailInfo() {
                 </h1>
             </div>
 
-            <div className="text-base font-light text-gray-500 mb-6">아래 항목에 맞춰 프로젝트 내용을 작성해주세요.</div>
+            <div className="text-base font-light text-gray-500 mb-6">
+                아래 항목에 맞춰 프로젝트 내용을 작성해주세요&nbsp;<span className="text-red-500">*</span>
+            </div>
 
             <ToastEditor
                 editorRef={editorRef}
@@ -36,8 +38,8 @@ export default function DetailInfo() {
                 onChange={(value) => {
                     setField("content", value);
                 }}
-                isErr={false}
-                errMsg={""}
+                isErr={errors.content ? true : false}
+                errMsg={errors.content}
             />
         </div>
     );

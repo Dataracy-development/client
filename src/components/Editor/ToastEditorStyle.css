@@ -1,7 +1,7 @@
 .toastui-editor-defaultUI {
     border: 1px solid #d8dae5 !important;
 }
-.toastui-editor-defaultUI.border-taskmateRed {
+.toastui-editor-defaultUI.border-error {
     border: 1px solid #ff6363 !important;
 }
 .toastui-editor-ww-container {

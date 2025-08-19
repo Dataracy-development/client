@@ -24,7 +24,7 @@ interface CreateProjectStore {
     setErrors: (errors: Partial<CreateProjectFormData>) => void;
 
     validateFormData: () => boolean;
-    getDatas: () => any;
+    getDatas: () => FormData;
 }
 
 const initialFormData: CreateProjectFormData = {
@@ -72,7 +72,7 @@ export const useCreateProjectStore = create<CreateProjectStore>((set, get) => ({
 
     validateFormData: () => {
         const { formData } = get();
-        const { title, topicId, analysisPurposeId, dataSourceId, authorLevelId } = formData;
+        const { title, topicId, analysisPurposeId, dataSourceId, authorLevelId, content } = formData;
 
         let newErrors: Partial<Record<keyof CreateProjectFormData, string>> = {};
         if (title.length === 0) {
@@ -90,6 +90,9 @@ export const useCreateProjectStore = create<CreateProjectStore>((set, get) => ({
         if (!authorLevelId) {
             newErrors.authorLevelId = "작성자 유형을 선택해주세요.";
         }
+        if (content.length === 0) {
+            newErrors.content = "상세 내용을 입력해주세요.";
+        }
 
         set({ errors: newErrors });
         return Object.keys(newErrors).length === 0;
@@ -99,7 +102,7 @@ export const useCreateProjectStore = create<CreateProjectStore>((set, get) => ({
         const { formData, thumbnailFile } = get();
 
         let request = new FormData();
-        if (thumbnailFile) request.append("thumbnailFile", thumbnailFile);
+        request.append("thumbnailFile", thumbnailFile);
         request.append("webRequest", JSON.stringify(formData));
 
         return request;

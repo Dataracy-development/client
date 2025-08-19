@@ -57,7 +57,33 @@ export default function EmailLoginForm() {
         onLoginApi,
         "login",
         {
-            onSuccess: async () => {
+            onSuccess: async (data) => {
+                if (process.env.NODE_ENV === "development") {
+                    const { refreshToken } = data.data;
+
+                    const response = await Apis.post(
+                        "/auth/dev/token/re-issue",
+                        { refreshToken },
+                        {
+                            withCredentials: true,
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${refreshToken}`,
+                            },
+                        }
+                    );
+
+                    document.cookie = `token=${response.data.accessToken}; path=/; SameSite=Lax; Secure`;
+                    document.cookie = `refreshToken=${refreshToken}; path=/; SameSite=Lax; Secure`;
+                    await new Promise((resolve) => setTimeout(resolve, 0));
+                    queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
+                    queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
+
+                    router.push("/");
+
+                    return;
+                }
+
                 // 쿠키에서 refreshToken 가져오기
                 const getCookie = (name: string) => {
                     const value = `; ${document.cookie}`;
@@ -73,7 +99,7 @@ export default function EmailLoginForm() {
 
                 try {
                     const response = await Apis.post(
-                        "/auth/dev/token/re-issue",
+                        "/auth/token/re-issue",
                         { refreshToken },
                         {
                             withCredentials: true,

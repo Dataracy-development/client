@@ -16,6 +16,8 @@ export default function Sidebar({ data }: { data: Project }) {
                     likedCount: data.likeCount,
                 }}
             />
+
+            {/* user === creator이면 FollowBtn 안보이게 */}
             <FollowBtn />
             <ConnectedDataSets data={data.connectedDataSets} />
         </div>

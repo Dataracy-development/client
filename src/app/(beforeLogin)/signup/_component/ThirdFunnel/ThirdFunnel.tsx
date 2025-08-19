@@ -64,9 +64,6 @@ export default function ThirdFunnel() {
                 console.error("Refresh API Error:", error);
             }
         },
-        onError: (error) => {
-            console.log("회원가입 실패", error);
-        },
     });
     const onSubmit = useCallback(
         (e: React.FormEvent<HTMLFormElement>) => {

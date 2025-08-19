@@ -1,30 +1,21 @@
 "use client";
 
+import { useCreateMutation } from "@/hooks/mutations/hooks";
 import { useCallback } from "react";
+import { createDatasetApi } from "../_api/apis";
+import { useCreateDatasetStore } from "../store/createDatasetStore";
+
 export default function SubmitBtn() {
-    // const { mutate } = useCreateMutation(createProjectApi, "createProject", {
-    //     onSuccess: (data) => {
-    //         console.log(data);
-    //     },
-    //     onError: (error) => {
-    //         console.log(error);
-    //     },
-    // });
+    const { validate, getFormData } = useCreateDatasetStore();
+
+    const { mutate } = useCreateMutation(createDatasetApi, "createDataset");
 
     const handleSubmit = useCallback(() => {
-        // if (!validateFormData()) return;
-        // const request = getDatas();
-        // console.log("request", request);
-        // // FormData 내용을 콘솔에 출력
-        // if (request instanceof FormData) {
-        //     console.log("=== handleSubmit Request ===");
-        //     for (let [key, value] of request.entries()) {
-        //         console.log(`${key}:`, value);
-        //     }
-        //     console.log("===================");
-        // }
-        // // mutate(request);
-    }, []);
+        if (!validate()) return;
+        const request = getFormData();
+
+        mutate(request);
+    }, [validate, getFormData, mutate]);
 
     return (
         <button className="w-fit h-[55px] px-9 text-base font-bold bg-secondary text-white rounded-xl flex items-center gap-2" onClick={handleSubmit}>

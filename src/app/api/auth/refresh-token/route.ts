@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-    console.log("refresh-token");
     const cookieStore = await cookies();
     const refreshToken = cookieStore.get("refreshToken");
 

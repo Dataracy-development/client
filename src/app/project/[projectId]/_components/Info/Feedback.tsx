@@ -1,33 +1,66 @@
 "use client";
 
 import { ContainerSpinner } from "@/components/Spinner";
+import { SendIcon } from "@/components/icons/icons";
+import { useCreateMutation } from "@/hooks/mutations/hooks";
 import { Comment } from "@/types/commonTypes";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import { useState } from "react";
-import { getProjectCommentsApi } from "../../_apis/apis";
+import { KeyboardEvent, useState } from "react";
+import { createProjectCommentApi, getProjectCommentsApi } from "../../_apis/apis";
 
 export default function Feedback() {
     const { projectId } = useParams();
     const projectIdNumber = projectId ? parseInt(projectId as string, 10) : undefined;
 
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
+    const [message, setMessage] = useState("");
 
     const { data, isPending, isError } = useQuery({
         queryKey: ["projectComments", projectIdNumber, page],
         queryFn: getProjectCommentsApi,
     });
 
-    console.log("comments:::", data);
+    const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    };
 
+    const { mutate: createProjectComment } = useCreateMutation(createProjectCommentApi, "createProjectComment");
+
+    const handleSendMessage = () => {
+        if (message.trim()) {
+            createProjectComment({ projectId: projectIdNumber, content: message });
+            setMessage("");
+        }
+    };
+
+    if (!data) return null;
     return (
         <div className="mt-12 pt-12 border-t border-n300">
             <div className="text-h6 mb-4">피드백</div>
-            <textarea className="w-full h-[100px] border border-n400 rounded-[10px] p-3 resize-none focus:outline-none font-inter text-sm leading-[22px] text-n900" placeholder="Type a message" />
+            <div className="relative">
+                <textarea
+                    className="w-full h-[100px] border border-n400 rounded-[10px] p-3 pr-12 resize-none focus:outline-none font-inter text-sm leading-[22px] text-n900"
+                    placeholder="Type a message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                />
+                <button
+                    onClick={handleSendMessage}
+                    disabled={!message.trim()}
+                    className="absolute bottom-3 right-3 p-1.5 rounded-full hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                    <SendIcon />
+                </button>
+            </div>
 
             <div className="flex flex-col gap-2 mt-5">
                 {isPending && <ContainerSpinner overlay={false} />}
-                {data?.content.map((v: Comment) => {
+                {data.content.map((v: Comment) => {
                     return (
                         <div key={v.id} className="w-full flex items-center gap-2">
                             <div className="w-11 h-11 rounded-full bg-blue-100"></div>
@@ -40,7 +73,7 @@ export default function Feedback() {
                 })}
             </div>
 
-            {page < data?.totalPages && (
+            {page < data.totalPages && (
                 <div className="mt-5 w-full flex justify-center">
                     <button className="text-button" onClick={() => setPage(page + 1)}>
                         + 더보기

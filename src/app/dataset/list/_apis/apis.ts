@@ -1,37 +1,17 @@
-import { BaseResponse } from "@/types/apiTypes";
+import { Dataset } from "@/types/commonTypes";
 import { Apis } from "@/utils/api";
 import { QueryFunction } from "@tanstack/react-query";
-import { SortType } from "../../list/store/projectListStore";
+import { DatasetSortType } from "../store/datasetListStore";
 
-// 프로젝트 생성
-export interface CreateProjectResponse extends BaseResponse {
-    data: any;
-}
-
-export const createProjectApi = async (data: FormData): Promise<CreateProjectResponse> => {
-    try {
-        const response = await Apis.postAuth("/projects", data, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
-
-        return response;
-    } catch (error) {
-        console.error("프로젝트 생성 중 오류 발생:", error);
-        throw error;
-    }
-};
-
-// 데이터셋 검색
+// 프로젝트 검색
 export interface SearchDatasetsRequest {
     webRequest: {
         keyword: string;
-        sortType: SortType | null;
+        sortType: DatasetSortType;
         topicId: number;
-        analysisPurposeId: number;
         dataSourceId: number;
-        year: number | null;
+        dataTypeId: number;
+        year: number;
     };
     pagable: {
         page: number;
@@ -39,8 +19,15 @@ export interface SearchDatasetsRequest {
     };
 }
 
-export interface SearchDatasetsResponse extends BaseResponse {
-    data: any;
+export interface SearchDatasetsResponse {
+    httpStatus: string;
+    message: string;
+    code: string;
+    data: {
+        content: Dataset[];
+        totalElements: number;
+        [key: string]: any;
+    };
 }
 
 export const onSearchDatasetsApi: QueryFunction<SearchDatasetsResponse, [_1: string, SearchDatasetsRequest]> = async ({ queryKey }) => {
@@ -53,8 +40,8 @@ export const onSearchDatasetsApi: QueryFunction<SearchDatasetsResponse, [_1: str
                 keyword: webRequest.keyword,
                 sortType: webRequest.sortType,
                 topicId: webRequest.topicId === 0 ? undefined : webRequest.topicId,
-                analysisPurposeId: webRequest.analysisPurposeId === 0 ? undefined : webRequest.analysisPurposeId,
                 dataSourceId: webRequest.dataSourceId === 0 ? undefined : webRequest.dataSourceId,
+                dataTypeId: webRequest.dataTypeId === 0 ? undefined : webRequest.dataTypeId,
                 year: webRequest.year === 0 ? undefined : webRequest.year,
                 page: pagable.page - 1,
                 size: pagable.size,

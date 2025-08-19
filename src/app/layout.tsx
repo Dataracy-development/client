@@ -1,5 +1,4 @@
 import { montserrat } from "@/assets/fonts/fonts";
-import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 import { SpinnerProvider } from "@/components/Spinner";
 import QueryProviderWrapper from "@/components/wrappers/QueryProviderWrapper";
@@ -33,7 +32,7 @@ export default function RootLayout({
                     <SpinnerProvider>
                         <Header />
                         {children}
-                        <Footer />
+                        {/* <Footer /> */}
                     </SpinnerProvider>
                 </QueryProviderWrapper>
             </body>

@@ -3,6 +3,7 @@
 import Spinner from "@/components/Spinner";
 import dynamic from "next/dynamic";
 import { useRef } from "react";
+import { useCreateDatasetStore } from "../store/createDatasetStore";
 
 const ToastEditor = dynamic(() => import("@/components/Editor/ToastEditorWrapper"), {
     ssr: false,
@@ -11,6 +12,7 @@ const ToastEditor = dynamic(() => import("@/components/Editor/ToastEditorWrapper
 
 export default function AnalysisGuide() {
     const editorRef = useRef<any>(null);
+    const { formData, setFormData, setFormDataError, formDataErrors } = useCreateDatasetStore();
 
     return (
         <div className="flex flex-col gap-[30px]">
@@ -27,13 +29,13 @@ export default function AnalysisGuide() {
 • 어떤 분석이 가능한지 설명해주세요
 • 추천하는 분석 기법이나 도구를 안내해주세요
 • 데이터 특성과 주의사항을 명시해주세요"
-                    initialValue={""}
+                    initialValue={formData.analysisGuide}
                     onChange={(value) => {
-                        // TODO: Add state management for analysis guide
-                        console.log("Analysis guide:", value);
+                        setFormData("analysisGuide", value);
+                        setFormDataError("analysisGuide", "");
                     }}
-                    isErr={false}
-                    errMsg={""}
+                    isErr={!!formDataErrors.analysisGuide}
+                    errMsg={formDataErrors.analysisGuide}
                 />
             </div>
         </div>

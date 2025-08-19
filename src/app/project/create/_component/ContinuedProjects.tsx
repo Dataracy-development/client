@@ -2,7 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { onSearchDatasetsApi } from "../_api/apis";
+import { onSearchProjectsApi } from "../../list/_apis/apis";
+import { useCreateProjectStore } from "../store/createProjectStore";
 
 interface SearchProject {
     id: number;
@@ -22,6 +23,8 @@ interface SearchProject {
 }
 
 export default function ContinuedProjects() {
+    const { setField } = useCreateProjectStore();
+
     const [searchValue, setSearchValue] = useState("");
     const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
     const [showDropdown, setShowDropdown] = useState(false);
@@ -38,7 +41,7 @@ export default function ContinuedProjects() {
 
     const { data, isPending, isError } = useQuery({
         queryKey: [
-            "getDatasets",
+            "getProjects",
             {
                 webRequest: {
                     keyword: debouncedSearchValue,
@@ -46,7 +49,7 @@ export default function ContinuedProjects() {
                     topicId: 0,
                     analysisPurposeId: 0,
                     dataSourceId: 0,
-                    year: 2025,
+                    authorLevelId: 0,
                 },
                 pagable: {
                     page: 0,
@@ -54,11 +57,9 @@ export default function ContinuedProjects() {
                 },
             },
         ],
-        queryFn: onSearchDatasetsApi,
+        queryFn: onSearchProjectsApi,
         enabled: debouncedSearchValue.trim().length > 0, // 검색어가 있을 때만 실행
     });
-
-    console.log(data);
 
     // 검색어가 변경될 때 드롭다운 표시
     useEffect(() => {
@@ -71,8 +72,10 @@ export default function ContinuedProjects() {
 
     const handleProjectSelect = (project: SearchProject) => {
         setSelectedProject(project);
-        setSearchValue(project.title);
+        setSearchValue("");
+        setDebouncedSearchValue("");
         setShowDropdown(false);
+        setField("parentProjectId", project.id);
     };
 
     const handleInputFocus = () => {

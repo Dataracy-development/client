@@ -11,8 +11,10 @@ export const validatePassword = (password: string) => {
  * @returns 토큰
  */
 export const getToken = () => {
-    return document.cookie
+    const token = document.cookie
         .split("; ")
         .find((row) => row.startsWith("token="))
         ?.split("=")[1];
+
+    return token;
 };

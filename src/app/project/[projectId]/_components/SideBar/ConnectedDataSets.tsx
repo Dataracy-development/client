@@ -1,11 +1,11 @@
+"use client";
+
 import { DatasetIcon, DomainIcon, UsageIcon } from "@/components/icons/icons";
 import { Dataset } from "@/types/commonTypes";
+import { useRouter } from "next/navigation";
 
 export default function ConnectedDataSets({ data }: { data: Dataset[] | null }) {
-    const handleDatasetClick = (datasetId: number) => {
-        // TODO: 데이터셋 상세 페이지로 이동
-        console.log(`데이터셋 ${datasetId} 클릭됨`);
-    };
+    const router = useRouter();
 
     return (
         <div className="w-full p-6 border border-gray-200 rounded-2xl mt-8">
@@ -19,7 +19,7 @@ export default function ConnectedDataSets({ data }: { data: Dataset[] | null }) 
                 {data?.map((dataset) => (
                     <div
                         key={dataset.id}
-                        onClick={() => handleDatasetClick(dataset.id)}
+                        onClick={() => router.push(`/dataset/${dataset.id}`)}
                         className="group p-4 bg-[#F8F9FA] rounded-xl border border-[#E9ECEF] hover:border-[#3F2AFF] hover:bg-[#F0F2FF] hover:shadow-md transition-all duration-200 cursor-pointer relative overflow-hidden"
                     >
                         {/* 클릭 가능함을 나타내는 오른쪽 화살표 */}
@@ -56,7 +56,7 @@ export default function ConnectedDataSets({ data }: { data: Dataset[] | null }) 
                     <div className="w-16 h-16 bg-[#F1F3F4] rounded-full flex items-center justify-center mx-auto mb-4">
                         <DatasetIcon />
                     </div>
-                    <p className="text-body2 text-[#666]">연결된 데이터셋이 없습니다</p>
+                    <p className="text-body2 text-[#666]">연결된 데이터셋이 없습니다.</p>
                 </div>
             )}
         </div>

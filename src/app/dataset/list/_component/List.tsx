@@ -1,52 +1,55 @@
 "use client";
 
 import Pagination from "@/components/Pagination";
+import Spinner from "@/components/Spinner";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { onSearchDatasetsApi } from "../_apis/apis";
+import useDatasetListStore from "../store/datasetListStore";
 import Item from "./Item";
 
 export default function List() {
     const router = useRouter();
 
-    // const { filter, pagable, setPage: setPageStore } = useProjectListStore();
+    const { filter, pagable, setPage } = useDatasetListStore();
 
-    // const { data, isPending, isError } = useQuery({
-    //     queryKey: [
-    //         "getProjects",
-    //         {
-    //             webRequest: filter,
-    //             pagable,
-    //         },
-    //     ],
-    //     queryFn: onSearchProjectsApi,
-    // });
+    const { data, isPending, isError } = useQuery({
+        queryKey: [
+            "getDatasets",
+            {
+                webRequest: filter,
+                pagable,
+            },
+        ],
+        queryFn: onSearchDatasetsApi,
+    });
 
-    // console.log(data);
-    // if (isPending) return <Spinner />;
-    // if (isError) return <div className="flex justify-center items-center h-full">Error</div>;
+    if (isPending) return <Spinner />;
+    if (isError) return <div className="flex justify-center items-center h-full">Error</div>;
 
-    // if (data?.data.content.length === 0)
-    // return (
-    //     <div className="flex flex-col justify-center items-center mt-24">
-    //         <div className="mb-6">
-    //             <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center animate-pulse">
-    //                 <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    //                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    //                 </svg>
-    //             </div>
-    //         </div>
-    //         <h3 className="text-xl font-semibold text-gray-700 mb-2">검색 결과가 없습니다</h3>
-    //         <p className="text-gray-500 text-center max-w-md leading-relaxed">다른 키워드로 검색해보시거나 필터를 조정해보세요</p>
-    //     </div>
-    // );
+    if (data?.data.content.length === 0)
+        return (
+            <div className="flex flex-col justify-center items-center mt-24">
+                <div className="mb-6">
+                    <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center animate-pulse">
+                        <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-700 mb-2">검색 결과가 없습니다</h3>
+                <p className="text-gray-500 text-center max-w-md leading-relaxed">다른 키워드로 검색해보시거나 필터를 조정해보세요</p>
+            </div>
+        );
 
     return (
         <div className="flex flex-col gap-5">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item) => (
-                <Item key={item} />
+            {data?.data.content.map((item) => (
+                <Item key={item.id} item={item} />
             ))}
 
             <div className="flex justify-center mt-5">
-                <Pagination page={1} viewPerPage={5} total={30} onChange={(page) => {}} />
+                <Pagination page={pagable.page} viewPerPage={pagable.size} total={data?.data.totalElements} onChange={(page) => setPage(page)} />
             </div>
 
             <button

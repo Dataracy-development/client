@@ -1,5 +1,5 @@
-import ListHeader from "@/app/project/list/_component/ListHeader/ListHeader";
 import PageHeader from "@/components/PageHeader";
+import DatasetListHeader from "./_component/DatasetListHeader";
 import Filter from "./_component/Filter";
 import List from "./_component/List";
 
@@ -12,7 +12,7 @@ export default function DatasetListPage() {
                 <Filter />
 
                 <div className="flex flex-col gap-6 flex-1">
-                    <ListHeader />
+                    <DatasetListHeader />
                     <List />
                 </div>
             </section>

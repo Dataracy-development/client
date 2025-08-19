@@ -1,9 +1,9 @@
 "use client";
 
-import { DatasetType } from "@/types/apiTypes";
+import { Dataset } from "@/types/commonTypes";
 
 interface SidebarProps {
-    data: DatasetType;
+    data: Dataset;
 }
 
 export default function Sidebar({ data }: SidebarProps) {
@@ -45,9 +45,7 @@ export default function Sidebar({ data }: SidebarProps) {
                         </tbody>
                     </table>
                 </div>
-                <button className="w-full mt-4 bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition-colors">
-                    전체 데이터 보기
-                </button>
+                <button className="w-full mt-4 bg-gray-100 text-gray-700 py-2 rounded-lg hover:bg-gray-200 transition-colors">전체 데이터 보기</button>
             </div>
 
             {/* 주요 통계 */}
@@ -154,16 +152,12 @@ export default function Sidebar({ data }: SidebarProps) {
                 <div className="text-center">
                     <div className="w-16 h-16 bg-gray-300 rounded-full mx-auto mb-3"></div>
                     <h4 className="font-medium text-gray-900 mb-1">데이터팀</h4>
-                    <span className="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm mb-3">
-                        전문가
-                    </span>
+                    <span className="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm mb-3">전문가</span>
                     <div className="space-y-2 text-sm text-gray-600">
                         <div>데이터 업로드 23개</div>
                         <div>평점 4.8</div>
                     </div>
-                    <button className="w-full mt-4 text-blue-600 hover:text-blue-700 text-sm">
-                        프로필 보기
-                    </button>
+                    <button className="w-full mt-4 text-blue-600 hover:text-blue-700 text-sm">프로필 보기</button>
                 </div>
             </div>
 

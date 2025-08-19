@@ -1,37 +1,26 @@
 "use client";
 
 import { useCreateMutation } from "@/hooks/mutations/hooks";
+import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { createProjectApi } from "../_api/apis";
 import { useCreateProjectStore } from "../store/createProjectStore";
 
 export default function SubmitBtn() {
     const { validateFormData, getDatas } = useCreateProjectStore();
+    const router = useRouter();
 
     const { mutate } = useCreateMutation(createProjectApi, "createProject", {
         onSuccess: (data) => {
-            console.log(data);
-        },
-        onError: (error) => {
-            console.log(error);
+            // router.push(`/project/${data.data.id}`);
         },
     });
 
     const handleSubmit = useCallback(() => {
         if (!validateFormData()) return;
         const request = getDatas();
-        console.log("request", request);
 
-        // FormData 내용을 콘솔에 출력
-        if (request instanceof FormData) {
-            console.log("=== handleSubmit Request ===");
-            for (let [key, value] of request.entries()) {
-                console.log(`${key}:`, value);
-            }
-            console.log("===================");
-        }
-
-        // mutate(request);
+        mutate(request);
     }, [validateFormData, getDatas, mutate]);
 
     return (

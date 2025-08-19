@@ -24,7 +24,6 @@ export default function List() {
         queryFn: onSearchProjectsApi,
     });
 
-    console.log(data);
     if (isPending) return <Spinner />;
     if (isError) return <div className="flex justify-center items-center h-full">Error</div>;
 

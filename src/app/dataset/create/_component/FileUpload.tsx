@@ -1,8 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useCreateDatasetStore } from "../store/createDatasetStore";
 
 export default function FileUpload() {
+    const { files: storeFiles, setFiles } = useCreateDatasetStore();
+
     const [isDragOver, setIsDragOver] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -44,7 +47,7 @@ export default function FileUpload() {
             const file = files[0];
             if (validateFile(file)) {
                 setSelectedFile(file);
-                // TODO: Add state management for data file
+                setFiles({ ...storeFiles, dataFile: file });
             }
         }
     };
@@ -55,7 +58,7 @@ export default function FileUpload() {
             const file = files[0];
             if (validateFile(file)) {
                 setSelectedFile(file);
-                // TODO: Add state management for data file
+                setFiles({ ...storeFiles, dataFile: file });
             }
         }
     };
@@ -88,6 +91,7 @@ export default function FileUpload() {
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedFile(null);
+                                setFiles({ ...storeFiles, dataFile: null });
                             }}
                         >
                             파일 제거

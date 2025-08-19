@@ -37,6 +37,7 @@ export default function DateRangePicker({ label = "분석 기간", isRequired = 
                 <div className="relative flex-1">
                     <Flatpickr
                         key={`start-${startDate?.getTime() || "empty"}`}
+                        value={startDate}
                         onChange={handleStartDateChange}
                         options={{
                             dateFormat: "Y-m-d",
@@ -62,6 +63,7 @@ export default function DateRangePicker({ label = "분석 기간", isRequired = 
                 <div className="relative flex-1">
                     <Flatpickr
                         key={`end-${endDate?.getTime() || "empty"}`}
+                        value={endDate}
                         onChange={handleEndDateChange}
                         options={{
                             dateFormat: "Y-m-d",

@@ -21,6 +21,37 @@ export const getProjectApi: QueryFunction<Project, [_1: string, projectId: numbe
     }
 };
 
+// 이어가기 프로젝트 리스트 조회
+interface GetContinuedProjectsApiResponse extends BaseResponse {
+    data: {
+        content: Project[];
+        totalPages: number;
+        totalElements: number;
+        size: number;
+        number: number;
+        [key: string]: any;
+    };
+}
+
+export const getContinuedProjectsApi: QueryFunction<any, [_1: string, projectId: number]> = async ({ queryKey }) => {
+    try {
+        const [, projectId] = queryKey;
+        const res = (await Apis.get(`/projects/${projectId}/continue`, {
+            params: {
+                page: 0,
+                size: 5,
+                sort: "createdAt,desc",
+            },
+        })) as GetContinuedProjectsApiResponse;
+
+        if (res.httpStatus === 200) return res.data;
+        else throw new Error(res.message);
+    } catch (err) {
+        console.error("getProjectApi error", err);
+        throw err;
+    }
+};
+
 // 프로젝트 댓글 조회
 interface GetProjectCommentsApiResponse extends BaseResponse {
     data: {
@@ -45,5 +76,26 @@ export const getProjectCommentsApi: QueryFunction<any, [_1: string, projectId: n
     } catch (err) {
         console.error("getProjectCommentsApi error", err);
         throw err;
+    }
+};
+
+// 프로젝트 댓글 작성
+export interface CreateProjectCommentRequest {
+    projectId: number;
+    content: string;
+    parentCommentId?: number;
+}
+export interface CreateProjectCommentApiResponse extends BaseResponse {
+    data: any;
+}
+export const createProjectCommentApi = async (data: CreateProjectCommentRequest): Promise<CreateProjectCommentApiResponse> => {
+    try {
+        const { projectId, ...rest } = data;
+        const response = await Apis.postAuth(`/projects/${projectId}/comments`, rest);
+
+        return response;
+    } catch (error) {
+        console.error("프로젝트 댓글 작성 중 오류 발생:", error);
+        throw error;
     }
 };

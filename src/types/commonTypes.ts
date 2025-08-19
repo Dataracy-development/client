@@ -1,10 +1,16 @@
 export interface Dataset {
     id: number;
     title: string;
+    username: string;
+    authorLabel: string;
+    occupationLabel: string;
     topicLabel: string;
+    dataSourceLabel: string;
     dataTypeLabel: string;
     startDate: string;
     endDate: string;
+    description: string;
+    analysisGuide: string;
     dataThumbnailUrl: string;
     downloadCount: number;
     rowCount: number;

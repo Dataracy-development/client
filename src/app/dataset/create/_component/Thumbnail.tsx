@@ -1,8 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useCreateDatasetStore } from "../store/createDatasetStore";
 
 export default function Thumbnail() {
+    const { files: storeFiles, setFiles } = useCreateDatasetStore();
+
     const [isDragOver, setIsDragOver] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -34,7 +37,7 @@ export default function Thumbnail() {
             const file = files[0];
             if (validateFile(file)) {
                 setSelectedFile(file);
-                // setThumbnailFile(file);
+                setFiles({ ...storeFiles, thumbnailFile: file });
             }
         }
     };
@@ -45,7 +48,7 @@ export default function Thumbnail() {
             const file = files[0];
             if (validateFile(file)) {
                 setSelectedFile(file);
-                // setThumbnailFile(file);
+                setFiles({ ...storeFiles, thumbnailFile: file });
             }
         }
     };
@@ -75,6 +78,7 @@ export default function Thumbnail() {
                             onClick={(e) => {
                                 e.stopPropagation();
                                 setSelectedFile(null);
+                                setFiles({ ...storeFiles, thumbnailFile: null });
                             }}
                         >
                             파일 제거

@@ -6,12 +6,9 @@ export const getRefreshToken = async () => {
             credentials: "include", // 쿠키를 포함하여 요청
         });
 
-        console.log("response:::", response);
-
         if (response.ok) {
             const { refreshToken } = await response.json();
 
-            console.log("refreshToken:::", refreshToken);
             if (refreshToken) {
                 try {
                     const response = await Apis.post("/auth/refresh", null, {

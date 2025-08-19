@@ -8,6 +8,11 @@ export interface LoginRequest {
 
 export const onLoginApi = async (body: LoginRequest) => {
     try {
+        if (process.env.NODE_ENV === "development") {
+            const response = await Apis.post("/auth/dev/login", body);
+            return response;
+        }
+
         const response = await Apis.post("/auth/login", body);
         return response;
     } catch (error) {
