@@ -71,7 +71,7 @@ export interface DataTypesResponse extends BaseResponse {
 }
 export const onGetDataTypesApi = async (): Promise<DataTypesResponse> => {
     try {
-        const response = await Apis.get("/references/datatypes");
+        const response = await Apis.get("/references/data-types");
         return response;
     } catch (error) {
         console.error("onGetDataTypesApi error:::", error);

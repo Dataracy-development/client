@@ -1,3 +1,5 @@
+"use client";
+
 import PageHeader from "@/components/PageHeader";
 import BaseInfo from "./_component/BaseInfo";
 import ContinuedProjects from "./_component/ContinuedProjects";

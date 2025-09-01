@@ -18,3 +18,16 @@ export const getToken = () => {
 
     return token;
 };
+
+/**
+ * 바이트를 KB 단위로 변환하여 반환
+ * @param bytes 바이트 값
+ * @param decimals 소수점 자릿수 (기본값: 2)
+ * @returns KB 단위 문자열
+ */
+export const bytesToKB = (bytes: number, decimals: number = 2): string => {
+    if (bytes === 0) return "0 KB";
+
+    const kb = bytes / 1024;
+    return `${kb.toFixed(decimals)} KB`;
+};

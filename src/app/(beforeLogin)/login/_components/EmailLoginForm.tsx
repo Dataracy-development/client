@@ -79,7 +79,7 @@ export default function EmailLoginForm() {
                     queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
                     queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
 
-                    router.push("/");
+                    window.location.href = "/";
 
                     return;
                 }

@@ -1,10 +1,9 @@
-import titleBg from "@/assets/imgs/ProjectDetailSampleImg.jpg";
 import Image from "next/image";
 
-export default function Title({ domain, purpose, source, title }: { domain: string; purpose: string; source: string; title: string }) {
+export default function Title({ domain, purpose, source, title, thumbnailUrl }: { domain: string; purpose: string; source: string; title: string; thumbnailUrl: string }) {
     return (
         <div className="w-full h-[300px] relative rounded-2xl overflow-hidden">
-            <Image src={titleBg} alt="title-bg" fill className="absolute top-0 left-0" />
+            <Image src={thumbnailUrl} alt="title-bg" fill className="absolute top-0 left-0" />
             <div className="w-full h-full bg-black/20 absolute top-0 left-0"></div>
 
             <div className="flex gap-1 mb-20 absolute top-5 left-5">

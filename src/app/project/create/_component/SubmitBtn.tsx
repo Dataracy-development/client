@@ -12,7 +12,7 @@ export default function SubmitBtn() {
 
     const { mutate } = useCreateMutation(createProjectApi, "createProject", {
         onSuccess: (data) => {
-            // router.push(`/project/${data.data.id}`);
+            router.push(`/project/${data.data.id}`);
         },
     });
 

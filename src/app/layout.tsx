@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={`${inter.variable} ${montserrat.variable} ${notoSansKR.variable} font-nsKR`}>
+            <body className={`${inter.variable} ${montserrat.variable} ${notoSansKR.variable} font-nsKR min-w-[1200px]`}>
                 <QueryProviderWrapper>
                     <SpinnerProvider>
                         <Header />

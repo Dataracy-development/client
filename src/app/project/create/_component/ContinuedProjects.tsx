@@ -9,17 +9,12 @@ interface SearchProject {
     id: number;
     title: string;
     content: string;
-    username: string;
-    projectThumbnailUrl: string | null;
+    creatorName: string;
     topicLabel: string;
     analysisPurposeLabel: string;
     dataSourceLabel: string;
     authorLevelLabel: string;
-    commentCount: number;
-    likeCount: number;
     viewCount: number;
-    createdAt: string;
-    childProjects: any[];
 }
 
 export default function ContinuedProjects() {
@@ -131,7 +126,7 @@ export default function ContinuedProjects() {
                                             <div className="font-medium text-gray-900 mb-1">{project.title}</div>
                                             <div className="text-sm text-gray-600 mb-2 line-clamp-2">{project.content}</div>
                                             <div className="flex items-center gap-4 text-xs text-gray-500">
-                                                <span>작성자: {project.username}</span>
+                                                <span>작성자: {project.creatorName}</span>
                                                 <span>주제: {project.topicLabel}</span>
                                                 <span>목적: {project.analysisPurposeLabel}</span>
                                             </div>

@@ -1,14 +1,20 @@
 "use client";
 
 import { useCreateMutation } from "@/hooks/mutations/hooks";
+import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { createDatasetApi } from "../_api/apis";
 import { useCreateDatasetStore } from "../store/createDatasetStore";
 
 export default function SubmitBtn() {
     const { validate, getFormData } = useCreateDatasetStore();
+    const router = useRouter();
 
-    const { mutate } = useCreateMutation(createDatasetApi, "createDataset");
+    const { mutate } = useCreateMutation(createDatasetApi, "createDataset", {
+        onSuccess: (data) => {
+            router.push(`/dataset/${data.data.id}`);
+        },
+    });
 
     const handleSubmit = useCallback(() => {
         if (!validate()) return;

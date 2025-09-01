@@ -27,7 +27,7 @@ export default function Item({ item }: { item: Project }) {
                             <div className="w-9 h-9 rounded-full bg-gray-200"></div>
                             <div>
                                 <div className="text-caption">{item.topicLabel}</div>
-                                <div className="text-button mt-[5px]">{item.username}</div>
+                                <div className="text-button mt-[5px]">{item.creatorName}</div>
                             </div>
                         </div>
                         {/* Counting */}

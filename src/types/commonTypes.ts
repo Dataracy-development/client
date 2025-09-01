@@ -1,12 +1,17 @@
 export interface Dataset {
     id: number;
     title: string;
-    username: string;
+    creatorId: number;
+    creatorName: string;
     authorLabel: string;
+    previewJson: string;
+    userIntroductionText: string;
+    userProfileImageUrl: string;
     occupationLabel: string;
     topicLabel: string;
     dataSourceLabel: string;
     dataTypeLabel: string;
+    sizeBytes: number;
     startDate: string;
     endDate: string;
     description: string;
@@ -22,7 +27,7 @@ export interface Dataset {
 export interface Project {
     id: number;
     title: string;
-    username: string;
+    creatorName: string;
     userIntroductionText: string;
     authorLevelLabel: string;
     occupationLabel: string;
@@ -44,7 +49,7 @@ export interface Project {
 
 export interface Comment {
     id: number;
-    username: string;
+    creatorName: string;
     authorLevelLabel: string;
     userProfileUrl: string;
     content: string;
@@ -52,4 +57,17 @@ export interface Comment {
     childCommentCount: number;
     createdAt: string;
     isLiked: boolean;
+}
+
+export interface User {
+    id: number;
+    role: string;
+    email: string;
+    nickname: string;
+    authorLevelLabel: string;
+    occupationLabel: string;
+    topicLabels: string[];
+    visitSourceLabel: string;
+    profileImageUrl: string;
+    introductionText: string;
 }

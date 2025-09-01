@@ -1,12 +1,16 @@
 "use client";
 
+import { useUserInfo } from "@/hooks/queries";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Button from "../Button";
+import ProfileDropdown from "./ProfileDropdown";
 
 export default function Header() {
     const router = useRouter();
     const pathname = usePathname();
+
+    const { user, isPending, isError } = useUserInfo();
 
     if (pathname === "/signup" || pathname === "/login" || pathname === "/find-pw") return null;
 
@@ -39,7 +43,7 @@ export default function Header() {
                         <input type="text" className="flex-1 focus:outline-none h-full text-body2 bg-n200  leading-[45px]" placeholder="프로젝트, 데이터셋 검색" />
                     </div>
 
-                    <Button label="시작하기" className="w-[100px] !h-[45px]" onClick={() => router.push("/login")} />
+                    {user?.id ? <ProfileDropdown user={user} /> : <Button label="시작하기" className="w-[100px] !h-[45px]" onClick={() => router.push("/login")} />}
                 </div>
             </div>
         </div>

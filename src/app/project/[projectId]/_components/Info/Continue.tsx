@@ -39,7 +39,7 @@ export default function Continue() {
 
                                     <div className="flex items-center gap-4">
                                         <div className="flex items-center gap-2">
-                                            <span className="text-body2 text-gray-600">{project.username}</span>
+                                            <span className="text-body2 text-gray-600">{project.creatorName}</span>
                                         </div>
                                     </div>
                                 </div>

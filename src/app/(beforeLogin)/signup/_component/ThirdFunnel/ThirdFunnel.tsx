@@ -38,7 +38,7 @@ export default function ThirdFunnel() {
 
     // 회원가입
     const { mutate: signup } = useSignupMutation({
-        onSuccess: async () => {
+        onSuccess: async (data) => {
             const refreshToken = process.env.NEXT_PUBLIC_TEMP_REFRESH_TOKEN;
 
             try {
@@ -85,7 +85,8 @@ export default function ThirdFunnel() {
         [formData, validateBasicInfo, signup]
     );
 
-    if (results[0].isPending || results[1].isPending) return <Spinner />;
+    if (results[0].isPending || results[1].isPending || results[2].isPending || results[3].isPending) return <Spinner />;
+    if (!results[0].data || !results[1].data || !results[2].data || !results[3].data) return null;
     return (
         <form onSubmit={onSubmit} className="flex flex-col gap-[14px]">
             <Input

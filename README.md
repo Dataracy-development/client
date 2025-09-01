@@ -1,4 +1,21 @@
+# Dataracy Client
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Features
+
+### 마이페이지 (MyPage)
+- **내 정보 관리**: 프로필 정보 조회 및 수정
+- **내가 작성한 프로젝트**: 사용자가 작성한 프로젝트 목록 조회
+- **내가 작성한 데이터셋**: 사용자가 작성한 데이터셋 목록 조회  
+- **좋아요 한 프로젝트**: 사용자가 좋아요 한 프로젝트 목록 조회
+- **좋아요 한 데이터셋**: 사용자가 좋아요 한 데이터셋 목록 조회
+
+### 주요 기능
+- 사용자 정보 수정 (닉네임, 작성자 레벨, 직무, 관심 도메인, 방문 경로, 자기소개)
+- 프로젝트 및 데이터셋 목록 페이지네이션
+- 반응형 디자인 및 모던한 UI/UX
+- React Query를 활용한 효율적인 데이터 관리
 
 ## Getting Started
 

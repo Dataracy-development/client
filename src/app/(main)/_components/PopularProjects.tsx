@@ -7,6 +7,7 @@ import ProjectCard from "./ProjectCard";
 
 export default function PopularProjects({ data }: { data: Project[] }) {
     const router = useRouter();
+
     return (
         <div className="max-w-[1200px] w-full mx-auto">
             <div className="text-h3 mb-2.5 text-center">인기 프로젝트</div>

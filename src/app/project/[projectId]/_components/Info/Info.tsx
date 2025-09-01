@@ -7,7 +7,7 @@ import Title from "./Title";
 export default function Info({ data }: { data: Project }) {
     return (
         <div className="flex-1">
-            <Title domain={data.topicLabel} purpose={data.analysisPurposeLabel} source={data.dataSourceLabel} title={data.title} />
+            <Title domain={data.topicLabel} purpose={data.analysisPurposeLabel} source={data.dataSourceLabel} title={data.title} thumbnailUrl={data.projectThumbnailUrl} />
             <Content data={data.content} />
             <Feedback />
             <Continue />

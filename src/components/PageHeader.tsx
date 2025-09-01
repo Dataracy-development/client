@@ -16,22 +16,27 @@ const pageHeaderList = [
     {
         path: "/project/create",
         title: "프로젝트 작성",
-        description: "여러분의 프로젝트를 공유하고, 피드백을 통해 함께 성장하세요!",
+        description: "여러분의 프로젝트를 공유하고, 피드백을 통해 함께 성장하세요",
     },
     {
         path: "/dataset/list",
         title: "데이터셋 탐색",
-        description: "다양한 분석 주제의 데이터를 살펴보고 직접 프로젝트에 활용해보세요!",
+        description: "다양한 분석 주제의 데이터를 살펴보고 직접 프로젝트에 활용해보세요",
     },
     {
         path: "/dataset/[datasetId]",
         title: "데이터셋 탐색",
-        description: "데이터셋 상세 페이지입니다. 뭐라 적어야할까요?",
+        description: "데이터셋 상세 페이지입니다",
     },
     {
         path: "/dataset/create",
         title: "데이터셋 작성",
-        description: "데이터셋을 작성하고 공유하세요!",
+        description: "데이터셋을 작성하고 공유하세요",
+    },
+    {
+        path: "/mypage",
+        title: "마이페이지",
+        description: "내 정보와 활동 내역을 확인하고 관리하세요",
     },
 ];
 

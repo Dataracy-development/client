@@ -1,11 +1,13 @@
 import { Project } from "@/types/commonTypes";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function ProjectCard({ data }: { data: Project }) {
+    console.log("data:::", data);
     return (
         <Link href={`/project/${data.id}`}>
             <div className="h-[570px] bg-white rounded-2xl border border-n500 flex flex-col hover:shadow-md transition-all duration-300">
-                <div className="w-full h-[285px] rounded-t-2xl bg-gray-200 py-5 px-[18px]">
+                <div className="w-full h-[285px] rounded-t-2xl bg-gray-200 py-5 px-[18px] relative">
                     <div className="flex gap-1">
                         {[data.topicLabel, data.analysisPurposeLabel, data.authorLevelLabel, data.dataSourceLabel].map((v) => {
                             return (
@@ -15,6 +17,8 @@ export default function ProjectCard({ data }: { data: Project }) {
                             );
                         })}
                     </div>
+
+                    <Image src={data.projectThumbnailUrl} alt="project-thumbnail" fill className="absolute top-0 left-0 rounded-t-2xl" />
                 </div>
 
                 <div className="px-5 py-[18px] flex-1 flex flex-col justify-between">
@@ -29,7 +33,7 @@ export default function ProjectCard({ data }: { data: Project }) {
                                 <div className="w-10 h-10 rounded-full bg-gray-200"></div>
                                 <div className="">
                                     <div className="text-caption mb-[5px]">Job</div>
-                                    <div className="text-button">{data.username}</div>
+                                    <div className="text-button">{data.creatorName}</div>
                                 </div>
                             </div>
 
@@ -96,8 +100,6 @@ export default function ProjectCard({ data }: { data: Project }) {
                                 </div>
                             </div>
                         </div>
-
-                        <div className="h-[60px] w-full bg-white text-button text-n900 flex justify-center items-center rounded-2xl">+&nbsp;이어가기</div>
                     </div>
                 </div>
             </div>

@@ -1,15 +1,17 @@
 "use client";
 
+import Pagination from "@/components/Pagination";
 import { ContainerSpinner } from "@/components/Spinner";
 import { SendIcon } from "@/components/icons/icons";
 import { useCreateMutation } from "@/hooks/mutations/hooks";
 import { Comment } from "@/types/commonTypes";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { KeyboardEvent, useState } from "react";
 import { createProjectCommentApi, getProjectCommentsApi } from "../../_apis/apis";
 
 export default function Feedback() {
+    const queryClient = useQueryClient();
     const { projectId } = useParams();
     const projectIdNumber = projectId ? parseInt(projectId as string, 10) : undefined;
 
@@ -28,7 +30,12 @@ export default function Feedback() {
         }
     };
 
-    const { mutate: createProjectComment } = useCreateMutation(createProjectCommentApi, "createProjectComment");
+    const { mutate: createProjectComment } = useCreateMutation(createProjectCommentApi, "createProjectComment", {
+        onSuccess: () => {
+            setPage(0);
+            queryClient.invalidateQueries({ queryKey: ["projectComments", projectIdNumber, 0] });
+        },
+    });
 
     const handleSendMessage = () => {
         if (message.trim()) {
@@ -65,7 +72,7 @@ export default function Feedback() {
                         <div key={v.id} className="w-full flex items-center gap-2">
                             <div className="w-11 h-11 rounded-full bg-blue-100"></div>
                             <div className="flex-1">
-                                <div className="font-inter text-sm leading-[22px] font-bold text-n900">{v.username}</div>
+                                <div className="font-inter text-sm leading-[22px] font-bold text-n900">{v.creatorName}</div>
                                 <div className="font-inter text-xs leading-[20px] text-n900">{v.content}</div>
                             </div>
                         </div>
@@ -73,11 +80,9 @@ export default function Feedback() {
                 })}
             </div>
 
-            {page < data.totalPages && (
-                <div className="mt-5 w-full flex justify-center">
-                    <button className="text-button" onClick={() => setPage(page + 1)}>
-                        + 더보기
-                    </button>
+            {data.totalElements > 0 && (
+                <div className="mt-5 flex justify-center">
+                    <Pagination page={page + 1} viewPerPage={5} total={data.totalElements} onChange={(page) => setPage(page - 1)} />
                 </div>
             )}
         </div>
