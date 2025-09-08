@@ -1,28 +1,62 @@
 "use client";
 
+import { onGetDomainApi, onGetLevelApi, onGetOccupationApi, onGetVisitSourceApi } from "@/apis/referenceDataApis";
 import Input from "@/components/Input";
+import Selectbox from "@/components/Selectbox";
+import Spinner from "@/components/Spinner";
 import Textarea from "@/components/Textarea";
 import { User } from "@/types/commonTypes";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { updateMyInfoApi, UpdateMyInfoRequest } from "../_apis/apis";
+import { updateMyInfoApi } from "../_apis/apis";
 
 interface MyInfoProps {
     user: User;
 }
+interface FormData {
+    nickname: string;
+    authorLevelId: number;
+    occupationId: number;
+    topicIds: number[];
+    visitSourceId: number;
+    introductionText: string;
+}
 
 export default function MyInfo({ user }: MyInfoProps) {
+    console.log("user:::", user);
     const [isEditing, setIsEditing] = useState(false);
-    const [formData, setFormData] = useState<UpdateMyInfoRequest>({
+    const [formData, setFormData] = useState<FormData>({
         nickname: user.nickname,
-        authorLevelLabel: user.authorLevelLabel,
-        occupationLabel: user.occupationLabel,
-        topicLabels: user.topicLabels,
-        visitSourceLabel: user.visitSourceLabel,
+        authorLevelId: user.authorLevelId,
+        occupationId: user.occupationId,
+        topicIds: user.topicIds,
+        visitSourceId: user.visitSourceId,
         introductionText: user.introductionText,
     });
 
     const queryClient = useQueryClient();
+
+    // 옵션 조회
+    const results = useQueries({
+        queries: [
+            {
+                queryKey: ["level"],
+                queryFn: onGetLevelApi,
+            },
+            {
+                queryKey: ["domain"],
+                queryFn: onGetDomainApi,
+            },
+            {
+                queryKey: ["occupation"],
+                queryFn: onGetOccupationApi,
+            },
+            {
+                queryKey: ["visitSource"],
+                queryFn: onGetVisitSourceApi,
+            },
+        ],
+    });
 
     const updateMutation = useMutation({
         mutationFn: updateMyInfoApi,
@@ -37,30 +71,46 @@ export default function MyInfo({ user }: MyInfoProps) {
         },
     });
 
-    const handleInputChange = (field: keyof UpdateMyInfoRequest, value: string | string[]) => {
+    const handleInputChange = (field: keyof FormData, value: string | string[]) => {
         setFormData((prev) => ({
             ...prev,
             [field]: value,
         }));
     };
 
+    const handleSelectChange = (target: string, value: number | number[] | null) => {
+        setFormData((prev) => ({
+            ...prev,
+            [target]: value,
+        }));
+    };
+
     const handleSave = () => {
-        updateMutation.mutate(formData);
+        let request = new FormData();
+        // request.append("thumbnailFile", thumbnailFile);
+        request.append("webRequest", JSON.stringify(formData));
+
+        updateMutation.mutate(request);
     };
 
     const handleCancel = () => {
         setFormData({
             nickname: user.nickname,
-            authorLevelLabel: user.authorLevelLabel,
-            occupationLabel: user.occupationLabel,
-            topicLabels: user.topicLabels,
-            visitSourceLabel: user.visitSourceLabel,
+            authorLevelId: user.authorLevelId,
+            occupationId: user.occupationId,
+            topicIds: user.topicIds,
+            visitSourceId: user.visitSourceId,
             introductionText: user.introductionText,
         });
         setIsEditing(false);
     };
 
+    if (!user) return null;
     if (isEditing) {
+        // 로딩 중이거나 데이터가 없으면 스피너 표시
+        if (results[0].isPending || results[1].isPending || results[2].isPending || results[3].isPending) return <Spinner />;
+        if (!results[0].data || !results[1].data || !results[2].data || !results[3].data) return null;
+
         return (
             <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
                 <div className="flex justify-between items-center mb-8">
@@ -113,27 +163,41 @@ export default function MyInfo({ user }: MyInfoProps) {
 
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-3">작성자 레벨</label>
-                            <Input value={formData.authorLevelLabel || ""} onChange={(e) => handleInputChange("authorLevelLabel", e.target.value)} placeholder="작성자 레벨을 입력하세요" type="text" />
+                            <Selectbox
+                                initialValue={user.authorLevelId.toString()}
+                                placeholder="레벨을 선택해주세요"
+                                options={results[0].data.data.authorLevels.map((item) => ({ value: item.id.toString(), label: item.label })) || []}
+                                onChange={(value) => handleSelectChange("authorLevelId", parseInt(value, 10) || null)}
+                            />
                         </div>
 
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-3">직무</label>
-                            <Input value={formData.occupationLabel || ""} onChange={(e) => handleInputChange("occupationLabel", e.target.value)} placeholder="직무를 입력하세요" type="text" />
+                            <Selectbox
+                                initialValue={user.occupationId.toString()}
+                                placeholder="직무를 선택해주세요"
+                                options={results[2].data.data.occupations.map((item) => ({ value: item.id.toString(), label: item.label })) || []}
+                                onChange={(value) => handleSelectChange("occupationId", parseInt(value, 10) || null)}
+                            />
                         </div>
 
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-3">방문 경로</label>
-                            <Input value={formData.visitSourceLabel || ""} onChange={(e) => handleInputChange("visitSourceLabel", e.target.value)} placeholder="방문 경로를 입력하세요" type="text" />
+                            <Selectbox
+                                initialValue={user.visitSourceId.toString()}
+                                placeholder="방문경로를 선택해주세요"
+                                options={results[3].data.data.visitSources.map((item) => ({ value: item.id.toString(), label: item.label })) || []}
+                                onChange={(value) => handleSelectChange("visitSourceId", parseInt(value, 10) || null)}
+                            />
                         </div>
                     </div>
 
                     <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-3">관심 도메인</label>
-                        <Input
-                            value={formData.topicLabels?.join(", ") || ""}
-                            onChange={(e) => handleInputChange("topicLabels", e.target.value.split(", ").filter(Boolean))}
-                            placeholder="관심 도메인을 쉼표로 구분하여 입력하세요"
-                            type="text"
+                        <Selectbox
+                            placeholder="관심 도메인을 선택해주세요"
+                            options={results[1].data.data.topics.map((item) => ({ value: item.id.toString(), label: item.label })) || []}
+                            onChange={(value) => handleSelectChange("topicIds", [results[1].data.data.topics.find((item) => item.value === value)?.id].filter(Boolean) as number[])}
                         />
                     </div>
 

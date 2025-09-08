@@ -18,6 +18,8 @@ export default function ProjectPage() {
         enabled: !!projectIdNumber,
     });
 
+    console.log("data:::", data);
+
     if (isPending) return <Spinner />;
     if (isError) return <div>Error</div>;
     if (!data) return null;

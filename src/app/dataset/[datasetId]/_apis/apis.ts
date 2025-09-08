@@ -23,7 +23,7 @@ export const getDatasetApi: QueryFunction<Dataset, [_1: string, datasetId: numbe
 };
 
 // 활용한 프로젝트들 조회
-interface UtilizeProject {
+export interface UtilizeProject {
     id: number;
     title: string;
     creatorName: string;

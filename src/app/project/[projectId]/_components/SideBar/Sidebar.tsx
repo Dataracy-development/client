@@ -20,8 +20,7 @@ export default function Sidebar({ data }: { data: Project }) {
                 }}
             />
 
-            {/* user === creator이면 FollowBtn 안보이게 */}
-            <FollowBtn />
+            {user?.id !== data.creatorId && <FollowBtn isLiked={data.isLiked} />}
             <ConnectedDataSets data={data.connectedDataSets} />
         </div>
     );

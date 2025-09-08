@@ -13,7 +13,6 @@ export default function Sidebar({ data }: SidebarProps) {
     const previewJson = JSON.parse(data.previewJson);
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
-    console.log("data:::", data);
     return (
         <div className="w-80 space-y-6">
             {/* 데이터 미리보기 */}

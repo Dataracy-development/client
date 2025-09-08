@@ -44,6 +44,7 @@ export interface Project {
     viewCount: number;
     isLiked: boolean;
     hasChild: boolean;
+    creatorId: number;
     connectedDataSets: Dataset[];
 }
 
@@ -65,9 +66,13 @@ export interface User {
     email: string;
     nickname: string;
     authorLevelLabel: string;
+    authorLevelId: number;
     occupationLabel: string;
+    occupationId: number;
     topicLabels: string[];
+    topicIds: number[];
     visitSourceLabel: string;
+    visitSourceId: number;
     profileImageUrl: string;
     introductionText: string;
 }

@@ -14,8 +14,7 @@ export default function PopularDatasets({ data }: { data: Dataset[] }) {
                 <div className="mt-10">
                     <div className="flex bg-n900 h-[50px] mb-1">
                         <div className="w-[280px] text-button text-white leading-[50px] text-center">카테고리</div>
-                        <div className="w-[440px] pl-2.5 text-button text-white leading-[50px]">데이터셋</div>
-                        <div className="w-[200px] pl-2.5 text-button text-white leading-[50px]">작성자</div>
+                        <div className="w-[640px] pl-2.5 text-button text-white leading-[50px]">데이터셋</div>
                         <div className="w-[100px] pl-2.5 text-button text-white leading-[50px]">업데이트일</div>
                         <div className="w-[200px] text-button text-white leading-[50px] text-center">Icon</div>
                     </div>

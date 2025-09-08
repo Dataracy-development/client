@@ -10,6 +10,17 @@ const ToastEditor = dynamic(() => import("@/components/Editor/ToastEditorWrapper
     loading: () => <Spinner />,
 });
 
+const initialValue = `### **분석 가이드를 작성해주세요.**
+
+<br/>예시:
+<br/>
+• 어떤 분석이 가능한지 설명해주세요:<br/>
+
+• 추천하는 분석 기법이나 도구를 안내해주세요:<br/>
+
+• 데이터 특성과 주의사항을 명시해주세요:<br/>
+`;
+
 export default function AnalysisGuide() {
     const editorRef = useRef<any>(null);
     const { formData, setFormData, setFormDataError, formDataErrors } = useCreateDatasetStore();
@@ -29,7 +40,7 @@ export default function AnalysisGuide() {
 • 어떤 분석이 가능한지 설명해주세요
 • 추천하는 분석 기법이나 도구를 안내해주세요
 • 데이터 특성과 주의사항을 명시해주세요"
-                    initialValue={formData.analysisGuide}
+                    initialValue={formData.analysisGuide === "" ? initialValue : formData.analysisGuide}
                     onChange={(value) => {
                         setFormData("analysisGuide", value);
                         setFormDataError("analysisGuide", "");

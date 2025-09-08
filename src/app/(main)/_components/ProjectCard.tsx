@@ -3,37 +3,46 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function ProjectCard({ data }: { data: Project }) {
-    console.log("data:::", data);
     return (
-        <Link href={`/project/${data.id}`}>
-            <div className="h-[570px] bg-white rounded-2xl border border-n500 flex flex-col hover:shadow-md transition-all duration-300">
-                <div className="w-full h-[285px] rounded-t-2xl bg-gray-200 py-5 px-[18px] relative">
-                    <div className="flex gap-1">
-                        {[data.topicLabel, data.analysisPurposeLabel, data.authorLevelLabel, data.dataSourceLabel].map((v) => {
+        <Link href={`/project/${data.id}`} className="group">
+            <div className="h-[570px] bg-white rounded-2xl border border-n500 flex flex-col overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-n400">
+                <div className="w-full h-[285px] rounded-t-2xl bg-gray-200 relative overflow-hidden">
+                    <Image
+                        src={data.projectThumbnailUrl || "/window.svg"}
+                        alt={data.title ? `${data.title} thumbnail` : "project-thumbnail"}
+                        fill
+                        className="absolute inset-0 object-cover transition-transform duration-500 ease-out group-hover:scale-105 z-0"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                        priority={false}
+                    />
+                    <div className="absolute inset-0 rounded-t-2xl bg-gradient-to-t from-black/40 via-black/10 to-transparent z-10 pointer-events-none" />
+                    <div className="absolute top-4 left-4 right-4 flex flex-wrap gap-2">
+                        {[data.topicLabel, data.analysisPurposeLabel, data.authorLevelLabel, data.dataSourceLabel].filter(Boolean).map((v) => {
                             return (
-                                <div className="w-fit h-[26px] text-caption leading-[26px] text-primary px-2 bg-n300 rounded-2xl " key={v}>
+                                <div className="w-fit px-2 h-6 text-xs leading-6 text-primary/90 bg-white/80 backdrop-blur-sm rounded-2xl border border-white/60 shadow-sm" key={v}>
                                     {v}
                                 </div>
                             );
                         })}
                     </div>
-
-                    <Image src={data.projectThumbnailUrl} alt="project-thumbnail" fill className="absolute top-0 left-0 rounded-t-2xl" />
                 </div>
 
                 <div className="px-5 py-[18px] flex-1 flex flex-col justify-between">
                     <div>
-                        <div className="text-h5 mb-6">{data.title}</div>
-                        <div className="text-body2 mb-6">{data.content}</div>
+                        <div className="text-h5 mb-3 line-clamp-1">{data.title}</div>
+                        <div className="text-body2 mb-6 text-n700/90">{data.content}</div>
                     </div>
 
                     <div>
                         <div className="flex justify-between items-center">
-                            <div className="mt-1.5 flex gap-2 items-center">
-                                <div className="w-10 h-10 rounded-full bg-gray-200"></div>
-                                <div className="">
-                                    <div className="text-caption mb-[5px]">Job</div>
-                                    <div className="text-button">{data.creatorName}</div>
+                            <div className="mt-1.5 flex gap-3 items-center">
+                                <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center text-caption text-n700">
+                                    {/* Avatar placeholder */}
+                                    {data.creatorName?.charAt(0)}
+                                </div>
+                                <div>
+                                    <div className="text-caption mb-[2px] text-n700/70">{data.occupationLabel || ""}</div>
+                                    <div className="text-button group-hover:text-primary transition-colors">{data.creatorName}</div>
                                 </div>
                             </div>
 
@@ -90,7 +99,7 @@ export default function ProjectCard({ data }: { data: Project }) {
                                             />
                                         </g>
                                         <defs>
-                                            <clipPath id="clip0_222_307">
+                                            <clipPath id="clip0_222_307)">
                                                 <rect width="24" height="24" fill="white" transform="translate(0.69751)" />
                                             </clipPath>
                                         </defs>

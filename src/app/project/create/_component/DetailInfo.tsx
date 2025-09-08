@@ -9,6 +9,36 @@ const ToastEditor = dynamic(() => import("@/components/Editor/ToastEditorWrapper
     ssr: false,
     loading: () => <Spinner />,
 });
+
+const initialValue = `### **프로젝트 상세 내용을 작성해주세요.**<br/>
+<br/>
+
+##### 1\. 문제 제기
+<br/>
+어떤 문제를 해결하고자 하는지 명확히 설명해주세요.<br/>
+
+> 온라인 쇼핑몰의 매출 증대를 위해서는 고객 개인의 구매 패턴을 정확히 파악하고 개인화된 상품 추천이 필요합니다. 기존의 단순한 인기 상품 추천 방식으로는 고객 만족도와 매출 증대에 한계가 있습니다.
+
+
+##### 2\. 문제 분석
+<br/>
+현재 상황을 데이터 기반으로 분석해보세요.<br/>
+
+> 고객별 구매 이력이나 관심 카테고리 반영이 부족해, 개인화된 경험이 제공되지 않습니다.
+
+
+##### 3\. 가설 설정
+<br/>
+해결 방안에 대한 가설을 세워보세요.<br/>
+
+> 고객의 구매 이력과 행동 데이터를 기반으로 상품을 개인화 추천하면 **구매 전환율이 최소 10% 증가**할 것이다
+
+
+##### 4\. 활용 데이터
+<br/>
+분석에 사용할 데이터를 설명해주세요.<br/>
+
+> **고객 프로필 데이터**: 성별, 연령대, 지역 등 기본 정보`;
 export default function DetailInfo() {
     const { setField, errors } = useCreateProjectStore();
     const editorRef = useRef<any>(null);
@@ -34,8 +64,9 @@ export default function DetailInfo() {
             <ToastEditor
                 editorRef={editorRef}
                 placeholder="프로젝트 상세 내용을 작성해주세요."
-                initialValue={""}
+                initialValue={initialValue}
                 onChange={(value) => {
+                    console.log("value:::", value);
                     setField("content", value);
                 }}
                 isErr={errors.content ? true : false}

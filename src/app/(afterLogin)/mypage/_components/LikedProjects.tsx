@@ -16,7 +16,6 @@ export default function LikedProjects() {
         queryFn: () => getLikedProjectsApi(page, pageSize),
     });
 
-    console.log("data:::", data);
     if (isPending) return <Spinner />;
     if (isError) return <div className="text-red-500">좋아요 한 프로젝트 목록을 불러오는데 실패했습니다.</div>;
 

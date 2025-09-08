@@ -3,20 +3,16 @@ import { Dataset, Project, User } from "@/types/commonTypes";
 import { Apis } from "@/utils/api";
 
 // 내 정보 수정
-export interface UpdateMyInfoRequest {
-    nickname?: string;
-    authorLevelLabel?: string;
-    occupationLabel?: string;
-    topicLabels?: string[];
-    visitSourceLabel?: string;
-    introductionText?: string;
-}
 export interface UpdateMyInfoResponse extends BaseResponse {
     data: User;
 }
-export const updateMyInfoApi = async (body: UpdateMyInfoRequest): Promise<UpdateMyInfoResponse> => {
+export const updateMyInfoApi = async (body: FormData): Promise<UpdateMyInfoResponse> => {
     try {
-        const response = await Apis.put("/users/me", body);
+        const response = await Apis.putAuth("/user", body, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
         return response;
     } catch (error) {
         console.error("updateMyInfoApi error:::", error);

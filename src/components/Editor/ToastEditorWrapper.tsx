@@ -21,13 +21,6 @@ export default function ToastEditorWrapper({ editorRef, placeholder, onChange, i
         }
     }, [isErr]);
 
-    useEffect(() => {
-        if (editorRef.current && initialValue) {
-            const instance = editorRef.current.getInstance();
-            instance.setMarkdown(initialValue);
-        }
-    }, [initialValue, editorRef]);
-
     return (
         <div>
             <Editor
@@ -42,7 +35,7 @@ export default function ToastEditorWrapper({ editorRef, placeholder, onChange, i
                     ["ul", "ol"],
                     ["table", "link"],
                 ]}
-                initialValue={initialValue || " "}
+                initialValue={initialValue || ""}
                 onChange={() => {
                     const instance = editorRef.current?.getInstance();
                     const markdown = instance?.getMarkdown();

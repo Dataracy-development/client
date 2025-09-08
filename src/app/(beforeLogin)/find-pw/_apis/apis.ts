@@ -60,7 +60,7 @@ export const onResetPasswordApi = async (body: ResetPasswordRequest): Promise<Re
             .find((row) => row.startsWith("token="))
             ?.split("=")[1];
 
-        const response = await Apis.patch("/user/password/change", body, {
+        const response = await Apis.put("/user/password/change", body, {
             withCredentials: true,
             headers: {
                 "Content-Type": "application/json",

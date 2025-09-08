@@ -31,7 +31,10 @@ const Selectbox: React.FC<SelectboxProps> = ({ label = "", isRequired = false, p
 
     useEffect(() => {
         if (initialValue) {
+            console.log("initialValue:::", initialValue);
+            console.log("options:::", options);
             const option = options.filter((v) => v.value === initialValue)[0];
+            console.log("option:::", option);
             if (option) setSelectedOption(option.label);
         }
     }, [initialValue, options]);
