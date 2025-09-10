@@ -84,21 +84,24 @@ export default function EmailLoginForm() {
                     return;
                 }
 
-                // 쿠키에서 refreshToken 가져오기
-                const getCookie = (name: string) => {
-                    const value = `; ${document.cookie}`;
-                    const parts = value.split(`; ${name}=`);
-                    if (parts.length === 2) return parts.pop()?.split(";").shift();
+                const getRefreshToken = async () => {
+                    const response = await fetch("/api/auth/refresh-token", {
+                        credentials: "include", // 쿠키를 포함하여 요청
+                    });
+                    if (response.ok) {
+                        const { refreshToken } = await response.json();
+                        return refreshToken;
+                    }
                     return null;
                 };
 
-                let refreshToken = getCookie("refreshToken");
+                let refreshToken = await getRefreshToken();
                 console.log("refreshToken:::", refreshToken);
                 if (!refreshToken) {
                     alert("로그인에 실패했습니다.");
                     return;
                 }
-                document.cookie = `refreshToken=${refreshToken}; path=/`;
+                // document.cookie = `refreshToken=${refreshToken}; path=/`;
 
                 try {
                     const response = await Apis.post("/auth/token/re-issue", {
