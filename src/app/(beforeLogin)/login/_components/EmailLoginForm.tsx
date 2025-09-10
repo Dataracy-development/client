@@ -93,6 +93,7 @@ export default function EmailLoginForm() {
                 };
 
                 let refreshToken = getCookie("refreshToken");
+                console.log("refreshToken:::", refreshToken);
                 if (!refreshToken) {
                     alert("로그인에 실패했습니다.");
                     return;
