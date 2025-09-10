@@ -61,9 +61,8 @@ export default function EmailLoginForm() {
                 if (process.env.NODE_ENV === "development") {
                     const { refreshToken } = data.data;
 
-                    const authUrl = process.env.NODE_ENV === "development" ? "/auth/dev/token/re-issue" : "/auth/token/re-issue";
                     const response = await Apis.post(
-                        authUrl,
+                        "/auth/dev/token/re-issue",
                         { refreshToken },
                         {
                             withCredentials: true,
@@ -94,22 +93,16 @@ export default function EmailLoginForm() {
                 };
 
                 let refreshToken = getCookie("refreshToken");
-                if (!refreshToken) {
-                    refreshToken = process.env.NEXT_PUBLIC_TEMP_REFRESH_TOKEN;
-                }
 
                 try {
-                    const response = await Apis.post(
-                        "/auth/token/re-issue",
-                        { refreshToken },
-                        {
-                            withCredentials: true,
-                            headers: {
-                                "Content-Type": "application/json",
-                                Authorization: `Bearer ${refreshToken}`,
-                            },
-                        }
-                    );
+                    const response = await Apis.post("/auth/token/re-issue", {
+                        withCredentials: true,
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    });
+
+                    console.log("login response:::", response);
 
                     document.cookie = `token=${response.data.accessToken}; path=/; SameSite=Lax; Secure`;
                     document.cookie = `refreshToken=${refreshToken}; path=/; SameSite=Lax; Secure`;
