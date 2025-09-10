@@ -96,12 +96,10 @@ export default function EmailLoginForm() {
                 };
 
                 let refreshToken = await getRefreshToken();
-                console.log("refreshToken:::", refreshToken);
                 if (!refreshToken) {
                     alert("로그인에 실패했습니다.");
                     return;
                 }
-                // document.cookie = `refreshToken=${refreshToken}; path=/`;
 
                 try {
                     const response = await Apis.post("/auth/token/re-issue", {
