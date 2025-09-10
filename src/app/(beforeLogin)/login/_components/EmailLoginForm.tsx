@@ -61,8 +61,9 @@ export default function EmailLoginForm() {
                 if (process.env.NODE_ENV === "development") {
                     const { refreshToken } = data.data;
 
+                    const authUrl = process.env.NODE_ENV === "development" ? "/auth/dev/token/re-issue" : "/auth/token/re-issue";
                     const response = await Apis.post(
-                        "/auth/dev/token/re-issue",
+                        authUrl,
                         { refreshToken },
                         {
                             withCredentials: true,
@@ -143,8 +144,24 @@ export default function EmailLoginForm() {
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-[14px]">
-            <Input label="이메일" name="email" {...email} placeholder="이메일을 입력해주세요." type="email" isErr={!!isErrors.email} errMsg={errorMessages.email} />
-            <Input label="비밀번호" name="password" {...password} placeholder="비밀번호를 입력해주세요." type="password" isErr={!!isErrors.password} errMsg={errorMessages.password} />
+            <Input
+                label="이메일"
+                name="email"
+                {...email}
+                placeholder="이메일을 입력해주세요."
+                type="email"
+                isErr={!!isErrors.email}
+                errMsg={errorMessages.email}
+            />
+            <Input
+                label="비밀번호"
+                name="password"
+                {...password}
+                placeholder="비밀번호를 입력해주세요."
+                type="password"
+                isErr={!!isErrors.password}
+                errMsg={errorMessages.password}
+            />
 
             <Link href="/find-pw" className="text-body2 font-inter text-primary my-[26px]">
                 비밀번호를 잊으셨나요?

@@ -42,8 +42,9 @@ export default function ThirdFunnel() {
             const refreshToken = process.env.NEXT_PUBLIC_TEMP_REFRESH_TOKEN;
 
             try {
+                const authUrl = process.env.NODE_ENV === "development" ? "/auth/dev/token/re-issue" : "/auth/token/re-issue";
                 const response = await Apis.post(
-                    "/auth/dev/token/re-issue",
+                    authUrl,
                     { refreshToken },
                     {
                         withCredentials: true,

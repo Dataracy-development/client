@@ -10,12 +10,14 @@ export const getRefreshToken = async () => {
             const { refreshToken } = await response.json();
 
             if (refreshToken) {
+                // refreshToken을 registerToken 쿠키로 설정
+                document.cookie = `registerToken=${refreshToken}; path=/`;
+
                 try {
-                    const response = await Apis.post("/auth/refresh", null, {
+                    const response = await Apis.post("/signup/oauth", null, {
                         withCredentials: true,
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${refreshToken}`,
                         },
                     });
 
