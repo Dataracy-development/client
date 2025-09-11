@@ -19,7 +19,7 @@ export default function Item({ item }: { item: Project }) {
 
                         <div className="text-h5 mb-3">{item.title}</div>
 
-                        <div className="text-body2 mb-3">{item.content}</div>
+                        <div className="text-body2 mb-3">{item.content.length > 120 ? item.content.slice(0, 120) + "..." : item.content}</div>
                     </div>
 
                     <div className="w-full flex justify-between items-center">
