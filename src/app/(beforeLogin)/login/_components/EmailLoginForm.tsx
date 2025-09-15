@@ -90,12 +90,16 @@ export default function EmailLoginForm() {
 
                 if (response.ok) {
                     const { refreshToken } = await response.json();
+                    console.log("refreshToken:::", refreshToken);
 
                     try {
                         const response = await Apis.post("/auth/token/re-issue", {
                             withCredentials: true,
                             headers: {
                                 "Content-Type": "application/json",
+                            },
+                            cookies: {
+                                refreshToken,
                             },
                         });
 
