@@ -10,7 +10,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { getRefreshToken } from "../../auth/_api/getRefreshToken";
 
 export default function EmailLoginForm() {
     const queryClient = useQueryClient();
@@ -85,37 +84,36 @@ export default function EmailLoginForm() {
                     return;
                 }
 
-                let refreshToken = document.cookie
-                    .split("; ")
-                    .find((row) => row.startsWith("refreshToken="))
-                    ?.split("=")[1];
-                console.log("refreshToken:::", refreshToken);
-                const refreshToken2 = await getRefreshToken();
-                console.log("refreshToken2:::", refreshToken2);
-                if (!refreshToken) {
+                const response = await fetch("/api/auth/refresh-token", {
+                    credentials: "include", // 쿠키를 포함하여 요청
+                });
+
+                if (response.ok) {
+                    const { refreshToken } = await response.json();
+
+                    try {
+                        const response = await Apis.post("/auth/token/re-issue", {
+                            withCredentials: true,
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        });
+
+                        console.log("login response:::", response);
+
+                        document.cookie = `token=${response.data.accessToken}; path=/; SameSite=Lax; Secure`;
+                        document.cookie = `refreshToken=${refreshToken}; path=/; SameSite=Lax; Secure`;
+                        await new Promise((resolve) => setTimeout(resolve, 0));
+                        queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
+                        queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
+
+                        router.push("/");
+                    } catch (error) {
+                        console.error("Refresh API Error:", error);
+                    }
+                } else {
                     alert("로그인에 실패했습니다.");
                     return;
-                }
-
-                try {
-                    const response = await Apis.post("/auth/token/re-issue", {
-                        withCredentials: true,
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    });
-
-                    console.log("login response:::", response);
-
-                    document.cookie = `token=${response.data.accessToken}; path=/; SameSite=Lax; Secure`;
-                    document.cookie = `refreshToken=${refreshToken}; path=/; SameSite=Lax; Secure`;
-                    await new Promise((resolve) => setTimeout(resolve, 0));
-                    queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
-                    queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
-
-                    router.push("/");
-                } catch (error) {
-                    console.error("Refresh API Error:", error);
                 }
             },
             onError: () => {
