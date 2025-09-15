@@ -1,5 +1,3 @@
-import { Apis } from "@/utils/api";
-
 export const getRefreshToken = async () => {
     try {
         const response = await fetch("/api/auth/refresh-token", {
@@ -7,27 +5,19 @@ export const getRefreshToken = async () => {
         });
 
         if (response.ok) {
-            const { refreshToken } = await response.json();
-
-            if (refreshToken) {
-                // refreshToken을 registerToken 쿠키로 설정
-                document.cookie = `registerToken=${refreshToken}; path=/`;
-
-                try {
-                    const response = await Apis.post("/signup/oauth", null, {
-                        withCredentials: true,
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    });
-
-                    return response;
-                } catch (error) {
-                    console.error("Refresh API Error:", error);
+            // Set-Cookie 헤더에서 refreshToken 추출
+            const setCookieHeader = response.headers.get("set-cookie");
+            if (setCookieHeader) {
+                // refreshToken=값; 형태에서 값 부분만 추출
+                const refreshTokenMatch = setCookieHeader.match(/refreshToken=([^;]+)/);
+                if (refreshTokenMatch) {
+                    return refreshTokenMatch[1];
                 }
             }
         }
+        return null;
     } catch (error) {
         console.error("Error fetching refresh token:", error);
+        return null;
     }
 };

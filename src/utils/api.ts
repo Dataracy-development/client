@@ -15,6 +15,12 @@ export const Apis = {
     put: (url: string, payload?: any, config?: any) => api.put(url, payload, { ...config }).then((res: any) => res.data),
     delete: (url: string, payload?: any, config?: any) => api.delete(url, { data: payload, ...config }).then((res: any) => res.data),
 
+    // 헤더 정보가 필요한 경우를 위한 메서드들
+    getWithHeaders: (url: string, config?: any) => api.get(url, { ...config }),
+    postWithHeaders: (url: string, payload?: any, config?: any) => api.post(url, payload, { ...config }),
+    putWithHeaders: (url: string, payload?: any, config?: any) => api.put(url, payload, { ...config }),
+    deleteWithHeaders: (url: string, payload?: any, config?: any) => api.delete(url, { data: payload, ...config }),
+
     // 인증이 필요한 API를 위한 메서드들
     getAuth: async (url: string, config?: any) => {
         const token = getToken();

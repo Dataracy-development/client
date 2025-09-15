@@ -13,19 +13,22 @@ export const onLoginApi = async (body: LoginRequest) => {
             return response;
         }
 
-        const response = await Apis.post("/auth/login", body);
+        const response = await Apis.postWithHeaders("/auth/login", body);
 
         // Set-Cookie 헤더에서 refreshToken 추출
-        const setCookieHeader = response.headers.get("set-cookie");
-        if (setCookieHeader) {
+        const setCookieHeaders = response.headers["set-cookie"];
+        if (setCookieHeaders && Array.isArray(setCookieHeaders)) {
             // refreshToken=값; 형태에서 값 부분만 추출
-            const refreshTokenMatch = setCookieHeader.match(/refreshToken=([^;]+)/);
-            if (refreshTokenMatch) {
-                document.cookie = `refreshToken=${refreshTokenMatch[1]}; path=/; SameSite=Lax; Secure`;
+            for (const setCookieHeader of setCookieHeaders) {
+                const refreshTokenMatch = setCookieHeader.match(/refreshToken=([^;]+)/);
+                if (refreshTokenMatch) {
+                    document.cookie = `refreshToken=${refreshTokenMatch[1]}; path=/; SameSite=Lax; Secure`;
+                    break;
+                }
             }
         }
 
-        return response;
+        return response.data;
     } catch (error) {
         console.error(error);
         throw error;
