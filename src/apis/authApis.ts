@@ -13,7 +13,9 @@ export const onLoginApi = async (body: LoginRequest) => {
             return response;
         }
 
-        const response = await Apis.postWithHeaders("/auth/login", body);
+        const response = await Apis.postWithHeaders("/auth/login", body, {
+            withCredentials: true,
+        });
 
         // Set-Cookie 헤더에서 refreshToken 추출
         const setCookieHeaders = response.headers["set-cookie"];
