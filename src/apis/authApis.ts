@@ -17,11 +17,13 @@ export const onLoginApi = async (body: LoginRequest) => {
 
         // Set-Cookie 헤더에서 refreshToken 추출
         const setCookieHeaders = response.headers["set-cookie"];
+        console.log("setCookieHeaders:::", setCookieHeaders);
         if (setCookieHeaders && Array.isArray(setCookieHeaders)) {
             // refreshToken=값; 형태에서 값 부분만 추출
             for (const setCookieHeader of setCookieHeaders) {
                 const refreshTokenMatch = setCookieHeader.match(/refreshToken=([^;]+)/);
                 if (refreshTokenMatch) {
+                    console.log("refreshTokenMatch:::", refreshTokenMatch);
                     document.cookie = `refreshToken=${refreshTokenMatch[1]}; path=/; SameSite=Lax; Secure`;
                     break;
                 }
