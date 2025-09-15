@@ -93,15 +93,16 @@ export default function EmailLoginForm() {
                     console.log("refreshToken:::", refreshToken);
 
                     try {
-                        const response = await Apis.post("/auth/token/re-issue", {
-                            withCredentials: true,
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            cookies: {
-                                refreshToken,
-                            },
-                        });
+                        const response = await Apis.post(
+                            "/auth/token/re-issue",
+                            {},
+                            {
+                                withCredentials: true,
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                            }
+                        );
 
                         console.log("login response:::", response);
 
