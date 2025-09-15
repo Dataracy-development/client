@@ -30,7 +30,7 @@ export default function ProjectCard({ data }: { data: Project }) {
                 <div className="px-5 py-[18px] flex-1 flex flex-col justify-between">
                     <div>
                         <div className="text-h5 mb-3 line-clamp-1">{data.title}</div>
-                        <div className="text-body2 mb-6 text-n700/90">{data.content}</div>
+                        <div className="text-body2 mb-6 text-n700/90">{data.content.length > 200 ? data.content.slice(0, 200) + "..." : data.content}</div>
                     </div>
 
                     <div>

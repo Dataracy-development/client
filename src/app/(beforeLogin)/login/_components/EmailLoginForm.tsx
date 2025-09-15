@@ -10,6 +10,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
+import { getRefreshToken } from "../../auth/_api/getRefreshToken";
 
 export default function EmailLoginForm() {
     const queryClient = useQueryClient();
@@ -84,18 +85,13 @@ export default function EmailLoginForm() {
                     return;
                 }
 
-                const getRefreshToken = async () => {
-                    const response = await fetch("/api/auth/refresh-token", {
-                        credentials: "include", // 쿠키를 포함하여 요청
-                    });
-                    if (response.ok) {
-                        const { refreshToken } = await response.json();
-                        return refreshToken;
-                    }
-                    return null;
-                };
-
-                let refreshToken = await getRefreshToken();
+                let refreshToken = document.cookie
+                    .split("; ")
+                    .find((row) => row.startsWith("refreshToken="))
+                    ?.split("=")[1];
+                console.log("refreshToken:::", refreshToken);
+                const refreshToken2 = await getRefreshToken();
+                console.log("refreshToken2:::", refreshToken2);
                 if (!refreshToken) {
                     alert("로그인에 실패했습니다.");
                     return;

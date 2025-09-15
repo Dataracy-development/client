@@ -14,6 +14,17 @@ export const onLoginApi = async (body: LoginRequest) => {
         }
 
         const response = await Apis.post("/auth/login", body);
+
+        // Set-Cookie 헤더에서 refreshToken 추출
+        const setCookieHeader = response.headers.get("set-cookie");
+        if (setCookieHeader) {
+            // refreshToken=값; 형태에서 값 부분만 추출
+            const refreshTokenMatch = setCookieHeader.match(/refreshToken=([^;]+)/);
+            if (refreshTokenMatch) {
+                document.cookie = `refreshToken=${refreshTokenMatch[1]}; path=/; SameSite=Lax; Secure`;
+            }
+        }
+
         return response;
     } catch (error) {
         console.error(error);
