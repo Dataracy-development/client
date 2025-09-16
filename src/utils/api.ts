@@ -23,7 +23,7 @@ export const Apis = {
 
     // 인증이 필요한 API를 위한 메서드들
     getAuth: async (url: string, config?: any) => {
-        const token = getToken();
+        const token = await getToken();
 
         if (!token) {
             throw new Error("토큰이 없습니다.");
@@ -40,7 +40,7 @@ export const Apis = {
         return res.data;
     },
     postAuth: async (url: string, payload?: any, config?: any) => {
-        const token = getToken();
+        const token = await getToken();
 
         if (!token) {
             throw new Error("토큰이 없습니다.");
@@ -57,7 +57,7 @@ export const Apis = {
         return res.data;
     },
     putAuth: async (url: string, payload?: any, config?: any) => {
-        const token = getToken();
+        const token = await getToken();
 
         if (!token) {
             throw new Error("토큰이 없습니다.");
@@ -74,7 +74,7 @@ export const Apis = {
         return res.data;
     },
     deleteAuth: async (url: string, payload?: any, config?: any) => {
-        const token = getToken();
+        const token = await getToken();
 
         if (!token) {
             throw new Error("토큰이 없습니다.");

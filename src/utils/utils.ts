@@ -10,13 +10,17 @@ export const validatePassword = (password: string) => {
  * 토큰 가져오기
  * @returns 토큰
  */
-export const getToken = () => {
-    const token = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("token="))
-        ?.split("=")[1];
+export const getToken = async () => {
+    const response = await fetch("/api/auth/access-token", {
+        credentials: "include", // 쿠키를 포함하여 요청
+    });
 
-    return token;
+    if (response.ok) {
+        const { accessToken } = await response.json();
+        return accessToken;
+    }
+
+    throw new Error("토큰이 없습니다.");
 };
 
 /**
