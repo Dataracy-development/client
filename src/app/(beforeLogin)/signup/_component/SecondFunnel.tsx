@@ -1,7 +1,9 @@
+import { onSendEmailVerificationCodeApi } from "@/apis/authApis";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useInput } from "@/hooks/hooks";
-import { useEmailVerificationCheckMutation, useEmailVerificationMutation } from "@/hooks/mutations/useSignupMutation";
+import { useCreateMutation } from "@/hooks/mutations/hooks";
+import { useEmailVerificationCheckMutation } from "@/hooks/mutations/useSignupMutation";
 import { AxiosError, AxiosResponse } from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSignupStore } from "../store/store";
@@ -14,7 +16,17 @@ export default function SecondFunnel() {
 
     const hasSentEmail = useRef(false); // 이메일 인증번호 발송 여부
     // 이메일 인증번호 발송 mutation
-    const { mutate: sendEmailVerificationCode } = useEmailVerificationMutation();
+    const { mutate: sendEmailVerificationCode } = useCreateMutation(onSendEmailVerificationCodeApi, "sendEmailVerificationCode", {
+        onSuccess: () => {
+            hasSentEmail.current = true;
+        },
+        onError: (error: AxiosError) => {
+            const { data } = error.response as AxiosResponse<{ message: string }>;
+            alert(data.message);
+            setCurrentStep(1);
+        },
+    });
+
     // 컴포넌트 마운트 시, 이메일 인증번호 발송
     useEffect(() => {
         if (formData.email && !hasSentEmail.current) {
