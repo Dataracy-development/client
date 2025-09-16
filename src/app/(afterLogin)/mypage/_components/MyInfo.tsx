@@ -7,6 +7,7 @@ import Spinner from "@/components/Spinner";
 import Textarea from "@/components/Textarea";
 import { User } from "@/types/commonTypes";
 import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query";
+import { AxiosError, AxiosResponse } from "axios";
 import { useState } from "react";
 import { updateMyInfoApi } from "../_apis/apis";
 
@@ -23,7 +24,6 @@ interface FormData {
 }
 
 export default function MyInfo({ user }: MyInfoProps) {
-    console.log("user:::", user);
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState<FormData>({
         nickname: user.nickname,
@@ -65,9 +65,9 @@ export default function MyInfo({ user }: MyInfoProps) {
             setIsEditing(false);
             alert("정보가 성공적으로 수정되었습니다.");
         },
-        onError: (error) => {
+        onError: (error: AxiosError) => {
             console.error("Update failed:", error);
-            alert("정보 수정에 실패했습니다.");
+            alert((error.response as AxiosResponse).data.message);
         },
     });
 
@@ -123,7 +123,12 @@ export default function MyInfo({ user }: MyInfoProps) {
                         >
                             {updateMutation.isPending ? (
                                 <>
-                                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <svg
+                                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                    >
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                         <path
                                             className="opacity-75"
@@ -158,7 +163,12 @@ export default function MyInfo({ user }: MyInfoProps) {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-3">닉네임</label>
-                            <Input value={formData.nickname || ""} onChange={(e) => handleInputChange("nickname", e.target.value)} placeholder="닉네임을 입력하세요" type="text" />
+                            <Input
+                                value={formData.nickname || ""}
+                                onChange={(e) => handleInputChange("nickname", e.target.value)}
+                                placeholder="닉네임을 입력하세요"
+                                type="text"
+                            />
                         </div>
 
                         <div>
@@ -197,13 +207,23 @@ export default function MyInfo({ user }: MyInfoProps) {
                         <Selectbox
                             placeholder="관심 도메인을 선택해주세요"
                             options={results[1].data.data.topics.map((item) => ({ value: item.id.toString(), label: item.label })) || []}
-                            onChange={(value) => handleSelectChange("topicIds", [results[1].data.data.topics.find((item) => item.value === value)?.id].filter(Boolean) as number[])}
+                            onChange={(value) =>
+                                handleSelectChange(
+                                    "topicIds",
+                                    [results[1].data.data.topics.find((item) => item.value === value)?.id].filter(Boolean) as number[]
+                                )
+                            }
                         />
                     </div>
 
                     <div>
                         <label className="block text-sm font-semibold text-gray-700 mb-3">자기소개</label>
-                        <Textarea value={formData.introductionText || ""} onChange={(e) => handleInputChange("introductionText", e.target.value)} placeholder="자기소개를 입력하세요" rows={4} />
+                        <Textarea
+                            value={formData.introductionText || ""}
+                            onChange={(e) => handleInputChange("introductionText", e.target.value)}
+                            placeholder="자기소개를 입력하세요"
+                            rows={4}
+                        />
                     </div>
                 </div>
             </div>
@@ -240,7 +260,12 @@ export default function MyInfo({ user }: MyInfoProps) {
                                     <img src={user.profileImageUrl} alt="프로필" className="w-24 h-24 rounded-full object-cover" />
                                 ) : (
                                     <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={1.5}
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                        />
                                     </svg>
                                 )}
                             </div>
@@ -307,7 +332,9 @@ export default function MyInfo({ user }: MyInfoProps) {
                             </div>
                             <label className="text-sm font-semibold text-gray-600">관심 도메인</label>
                         </div>
-                        <p className="text-lg font-medium text-gray-900">{user.topicLabels && user.topicLabels.length > 0 ? user.topicLabels.join(", ") : "-"}</p>
+                        <p className="text-lg font-medium text-gray-900">
+                            {user.topicLabels && user.topicLabels.length > 0 ? user.topicLabels.join(", ") : "-"}
+                        </p>
                     </div>
 
                     <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
