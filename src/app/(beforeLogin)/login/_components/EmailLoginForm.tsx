@@ -106,9 +106,6 @@ export default function EmailLoginForm() {
 
                         console.log("login response:::", response);
 
-                        document.cookie = `token=${response.data.accessToken}; path=/; SameSite=Lax; Secure`;
-                        document.cookie = `refreshToken=${refreshToken}; path=/; SameSite=Lax; Secure`;
-                        await new Promise((resolve) => setTimeout(resolve, 0));
                         queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
                         queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
 
