@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/components/Spinner";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getRefreshToken } from "../_api/getRefreshToken";
@@ -46,7 +47,7 @@ export default function SocialAuthPage() {
         fetchToken();
     }, []);
 
-    if (isLoading) return <div>Loading...</div>;
+    if (isLoading) return <Spinner />;
     if (error) {
         return <div className="text-red-500">{error}</div>;
     }
