@@ -24,9 +24,17 @@ export default function SocialAuthPage() {
                     return;
                 }
 
-                await getRefreshToken();
+                const reIssueResponse = await getRefreshToken();
 
-                window.location.href = "/";
+                if (reIssueResponse.ok) {
+                    window.location.href = "/";
+
+                    return;
+                } else {
+                    setError("인증 처리 중 오류가 발생했습니다.");
+                    setIsLoading(false);
+                    return;
+                }
             } catch (error) {
                 setError("인증 처리 중 오류가 발생했습니다.");
                 setIsLoading(false);
