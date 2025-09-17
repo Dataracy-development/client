@@ -10,16 +10,17 @@ export const getRefreshToken = async () => {
             const { refreshToken } = await response.json();
 
             if (refreshToken) {
-                // refreshToken을 registerToken 쿠키로 설정
-                document.cookie = `registerToken=${refreshToken}; path=/`;
-
                 try {
-                    const response = await Apis.post("/signup/oauth", null, {
-                        withCredentials: true,
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    });
+                    const response = await Apis.post(
+                        "/auth/token/re-issue",
+                        {},
+                        {
+                            withCredentials: true,
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        }
+                    );
 
                     return response;
                 } catch (error) {

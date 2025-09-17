@@ -2,6 +2,8 @@
 
 import AuthPageLeftSection from "@/components/Auth/AuthPageLeftSection";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import FirstFunnel from "./_component/FirstFunnel/FirstFunnel";
 import SecondFunnel from "./_component/SecondFunnel";
 import ThirdFunnel from "./_component/ThirdFunnel/ThirdFunnel";
@@ -32,9 +34,17 @@ const funnels: Funnel[] = [
 ];
 
 export default function EmailSignup() {
-    const { currentStep } = useSignupStore();
+    const searchParams = useSearchParams();
+    const social = searchParams.get("social");
+    const { currentStep, setCurrentStep } = useSignupStore();
 
     const currentFunnel = funnels.find((funnel) => funnel.step === currentStep);
+
+    useEffect(() => {
+        if (social) {
+            setCurrentStep(3);
+        }
+    }, [social, setCurrentStep]);
 
     return (
         <div className="py-[72px] flex justify-center">

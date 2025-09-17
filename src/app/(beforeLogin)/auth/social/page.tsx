@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getRefreshToken } from "../_api/getRefreshToken";
 
@@ -7,13 +8,23 @@ export default function SocialAuthPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const router = useRouter();
+
     useEffect(() => {
         const fetchToken = async () => {
             try {
                 setIsLoading(true);
-                const authResponse = await getRefreshToken();
+                const registerToken = await fetch("/api/auth/register-token", {
+                    credentials: "include", // 쿠키를 포함하여 요청
+                });
 
-                document.cookie = `token=${authResponse.accessToken}; path=/`;
+                if (registerToken.ok) {
+                    router.push("/signup?social=true");
+
+                    return;
+                }
+
+                await getRefreshToken();
 
                 window.location.href = "/";
             } catch (error) {

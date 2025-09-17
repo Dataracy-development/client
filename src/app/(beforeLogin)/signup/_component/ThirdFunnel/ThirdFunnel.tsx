@@ -4,16 +4,20 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Selectbox from "@/components/Selectbox";
 import Spinner from "@/components/Spinner";
+import { useCreateMutation } from "@/hooks/mutations/hooks";
 import { useSignupMutation } from "@/hooks/mutations/useSignupMutation";
 import { Apis } from "@/utils/api";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { useSignupStore } from "../../store/store";
-import { SignupRequest } from "./_apis/apis";
+import { onSocialSignupApi, SignupRequest, SocialSignupRequest } from "./_apis/apis";
 import { useGetOptionsQueries } from "./queries/queries";
 
 export default function ThirdFunnel() {
+    const searchParams = useSearchParams();
+    const social = searchParams.get("social");
+
     const { formData, setField, errors, validateBasicInfo, setError } = useSignupStore();
     const router = useRouter();
     const queryClient = useQueryClient();
@@ -38,41 +42,49 @@ export default function ThirdFunnel() {
 
     // 회원가입
     const { mutate: signup } = useSignupMutation({
-        onSuccess: async (data) => {
-            const refreshToken = process.env.NEXT_PUBLIC_TEMP_REFRESH_TOKEN;
-
+        onSuccess: async () => {
             try {
                 const authUrl = process.env.NODE_ENV === "development" ? "/auth/dev/token/re-issue" : "/auth/token/re-issue";
                 const response = await Apis.post(
                     authUrl,
-                    { refreshToken },
+                    {},
                     {
                         withCredentials: true,
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${refreshToken}`,
                         },
                     }
                 );
 
-                document.cookie = `token=${response.data.accessToken}; path=/; SameSite=Lax; Secure`;
-                await new Promise((resolve) => setTimeout(resolve, 0));
-                queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
-                queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
+                if (response.ok) {
+                    queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
+                    queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
 
-                router.push("/");
+                    router.push("/");
+                } else {
+                    alert("회원가입에 실패했습니다.");
+                    return;
+                }
             } catch (error) {
                 console.error("Refresh API Error:", error);
+                alert("회원가입에 실패했습니다.");
+                return;
             }
         },
     });
+
+    // 소셜 회원가입
+    const { mutate: socialSignup } = useCreateMutation(onSocialSignupApi, "socialSignup", {
+        onSuccess: () => {},
+    });
+
     const onSubmit = useCallback(
         (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
 
             if (!validateBasicInfo()) return;
             const { level, occupation, domains, visitSource } = formData;
-            const requestData: SignupRequest = {
+            const requestData: SignupRequest | SocialSignupRequest = {
                 ...formData,
                 authorLevelId: level,
                 occupationId: occupation,
@@ -81,9 +93,13 @@ export default function ThirdFunnel() {
                 isAdTermsAgreed: true,
             };
 
-            signup(requestData);
+            if (social) {
+                socialSignup(requestData as SocialSignupRequest);
+            } else {
+                signup(requestData as SignupRequest);
+            }
         },
-        [formData, validateBasicInfo, signup]
+        [formData, validateBasicInfo, signup, socialSignup]
     );
 
     if (results[0].isPending || results[1].isPending || results[2].isPending || results[3].isPending) return <Spinner />;
