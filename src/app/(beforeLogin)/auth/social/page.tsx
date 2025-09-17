@@ -18,10 +18,11 @@ export default function SocialAuthPage() {
                     credentials: "include", // 쿠키를 포함하여 요청
                 });
 
-                console.log("registerToken:::", registerToken);
-                return;
+                const registerTokenData = await registerToken.json();
+                console.log("registerToken:::", registerTokenData);
+                // return;
 
-                if (registerToken.ok) {
+                if (registerTokenData.success) {
                     router.push("/signup?social=true");
 
                     return;
