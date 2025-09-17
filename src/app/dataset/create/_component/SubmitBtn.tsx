@@ -8,11 +8,12 @@ import { createDatasetApi } from "../_api/apis";
 import { useCreateDatasetStore } from "../store/createDatasetStore";
 
 export default function SubmitBtn() {
-    const { validate, getFormData } = useCreateDatasetStore();
+    const { validate, getFormData, reset } = useCreateDatasetStore();
     const router = useRouter();
 
     const { mutate } = useCreateMutation(createDatasetApi, "createDataset", {
         onSuccess: (data) => {
+            reset();
             router.push(`/dataset/${data.data.id}`);
         },
         onError: (error: AxiosError) => {

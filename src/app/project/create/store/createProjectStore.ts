@@ -25,6 +25,8 @@ interface CreateProjectStore {
 
     validateFormData: () => boolean;
     getDatas: () => FormData;
+
+    reset: () => void;
 }
 
 const initialFormData: CreateProjectFormData = {
@@ -106,5 +108,9 @@ export const useCreateProjectStore = create<CreateProjectStore>((set, get) => ({
         request.append("webRequest", JSON.stringify(formData));
 
         return request;
+    },
+
+    reset: () => {
+        set({ formData: initialFormData, thumbnailFile: null, errors: {} });
     },
 }));

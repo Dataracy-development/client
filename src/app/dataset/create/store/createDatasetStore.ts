@@ -30,6 +30,8 @@ interface CreateDatasetStore {
 
     validate: () => boolean;
     getFormData: () => FormData;
+
+    reset: () => void;
 }
 
 const initialFormData: CreateDatasetWebRequest = {
@@ -120,5 +122,8 @@ export const useCreateDatasetStore = create<CreateDatasetStore>((set, get) => ({
         result.append("webRequest", JSON.stringify(formData));
 
         return result;
+    },
+    reset: () => {
+        set({ formData: initialFormData, files: initialFiles });
     },
 }));

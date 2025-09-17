@@ -7,11 +7,12 @@ import { createProjectApi } from "../_api/apis";
 import { useCreateProjectStore } from "../store/createProjectStore";
 
 export default function SubmitBtn() {
-    const { validateFormData, getDatas } = useCreateProjectStore();
+    const { validateFormData, getDatas, reset } = useCreateProjectStore();
     const router = useRouter();
 
     const { mutate } = useCreateMutation(createProjectApi, "createProject", {
         onSuccess: (data) => {
+            reset();
             router.push(`/project/${data.data.id}`);
         },
     });
