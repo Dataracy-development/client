@@ -9,8 +9,10 @@ export const getRefreshToken = async () => {
         if (response.ok) {
             const { refreshToken } = await response.json();
 
+            console.log("refreshToken:::", refreshToken);
             if (refreshToken) {
                 try {
+                    console.log("Apis.post:::");
                     const response = await Apis.post(
                         "/auth/token/re-issue",
                         {},
@@ -21,6 +23,8 @@ export const getRefreshToken = async () => {
                             },
                         }
                     );
+
+                    console.log("response:::", response);
 
                     return response;
                 } catch (error) {
