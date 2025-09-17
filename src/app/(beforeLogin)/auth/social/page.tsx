@@ -19,8 +19,6 @@ export default function SocialAuthPage() {
                 });
 
                 const registerTokenData = await registerToken.json();
-                console.log("registerToken:::", registerTokenData);
-                // return;
 
                 if (registerTokenData.success) {
                     router.push("/signup?social=true");
@@ -30,6 +28,7 @@ export default function SocialAuthPage() {
 
                 const reIssueResponse = await getRefreshToken();
 
+                console.log("reIssueResponse:::", reIssueResponse);
                 if (reIssueResponse.ok) {
                     window.location.href = "/";
 
