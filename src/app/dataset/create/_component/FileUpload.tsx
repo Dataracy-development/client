@@ -21,8 +21,8 @@ export default function FileUpload() {
     };
 
     const validateFile = (file: File) => {
-        const allowedTypes = ["text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/json", "text/plain"];
-        const allowedExtensions = [".csv", ".xlsx", ".json", ".txt"];
+        const allowedTypes = ["text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/json"];
+        const allowedExtensions = [".csv", ".xlsx", ".json"];
         const fileName = file.name.toLowerCase();
 
         if (file.size > 100 * 1024 * 1024) {
@@ -34,7 +34,7 @@ export default function FileUpload() {
             return true;
         }
 
-        alert("CSV, XLSX, JSON, TXT 파일만 업로드 가능합니다.");
+        alert("CSV, XLSX, JSON 파일만 업로드 가능합니다.");
         return false;
     };
 
@@ -100,7 +100,7 @@ export default function FileUpload() {
                 ) : (
                     <>
                         <div className="text-base font-medium text-gray-800 mb-2">파일을 드래그하거나 클릭하여 업로드</div>
-                        <div className="text-sm text-gray-500">CSV, XLSX, JSON, TXT (최대 100MB)</div>
+                        <div className="text-sm text-gray-500">CSV, XLSX, JSON (최대 100MB)</div>
                     </>
                 )}
             </div>
@@ -108,7 +108,7 @@ export default function FileUpload() {
             <input
                 ref={fileInputRef}
                 type="file"
-                accept=".csv,.xlsx,.json,.txt,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/json,text/plain"
+                accept=".csv,.xlsx,.json,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/json"
                 onChange={handleFileSelect}
                 className="hidden"
             />

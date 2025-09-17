@@ -26,7 +26,7 @@ export default function Banner() {
                         <Button label="프로젝트 둘러보기" className="w-[130px]" onClick={() => router.push("/project/list")} />
                     </div>
                 </div>
-                <Image src={BannerImg} alt="banner" className="flex-1 h-[580px] object-cover" />
+                <Image src={BannerImg} alt="banner" className="flex-1 h-[580px] object-cover" loading="lazy" fetchPriority="high" />
             </div>
         </div>
     );

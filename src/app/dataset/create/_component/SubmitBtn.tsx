@@ -1,6 +1,7 @@
 "use client";
 
 import { useCreateMutation } from "@/hooks/mutations/hooks";
+import { AxiosError, AxiosResponse } from "axios";
 import { useRouter } from "next/navigation";
 import { useCallback } from "react";
 import { createDatasetApi } from "../_api/apis";
@@ -13,6 +14,9 @@ export default function SubmitBtn() {
     const { mutate } = useCreateMutation(createDatasetApi, "createDataset", {
         onSuccess: (data) => {
             router.push(`/dataset/${data.data.id}`);
+        },
+        onError: (error: AxiosError) => {
+            alert((error.response as AxiosResponse).data.message);
         },
     });
 
