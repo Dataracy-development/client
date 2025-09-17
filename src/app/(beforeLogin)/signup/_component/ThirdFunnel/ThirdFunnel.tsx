@@ -54,7 +54,7 @@ export default function ThirdFunnel() {
                 }
             );
 
-            if (response.ok) {
+            if (response.httpStatus === 200) {
                 queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
                 queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
 
