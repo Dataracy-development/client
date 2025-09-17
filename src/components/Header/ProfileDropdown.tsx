@@ -1,8 +1,11 @@
 "use client";
 
+import { useCreateMutation } from "@/hooks/mutations/hooks";
+import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Button from "../Button";
+import { logoutApi } from "./_api/api";
 
 interface ProfileDropdownProps {
     user: {
@@ -28,9 +31,18 @@ export default function ProfileDropdown({ user }: ProfileDropdownProps) {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    const { mutate: logoutMutation } = useCreateMutation(logoutApi, "logout", {
+        onSuccess: () => {
+            window.location.reload();
+        },
+        onError: (error: AxiosError) => {
+            alert((error.response?.data as { message: string }).message);
+        },
+    });
+
     const handleLogout = () => {
         // TODO: 실제 로그아웃 로직 구현
-        router.push("/login");
+        logoutMutation({});
         setIsOpen(false);
     };
 
@@ -55,7 +67,9 @@ export default function ProfileDropdown({ user }: ProfileDropdownProps) {
                     {/* 사용자 정보 섹션 */}
                     <div className="px-4 py-3 border-b border-n200">
                         <div className="flex items-center gap-3 mb-2">
-                            <div className="w-[40px] h-[40px] bg-primary rounded-full flex items-center justify-center text-white font-semibold">{user.nickname.charAt(0).toUpperCase()}</div>
+                            <div className="w-[40px] h-[40px] bg-primary rounded-full flex items-center justify-center text-white font-semibold">
+                                {user.nickname.charAt(0).toUpperCase()}
+                            </div>
                             <div>
                                 <div className="text-body1 font-medium text-n900">{user.nickname}</div>
                                 {user.email && <div className="text-body3 text-n500">{user.email}</div>}

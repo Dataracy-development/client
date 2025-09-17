@@ -27,7 +27,7 @@ export const onLoginApi = async (body: LoginRequest) => {
 // 이메일 인증코드 전송
 export interface SendEmailVerificationCodeRequest {
     email: string;
-    purpose: "SIGN_UP" | "PASSWORD_RESET";
+    purpose: "SIGN_UP" | "PASSWORD_RESET" | "PASSWORD_SEARCH";
 }
 export const onSendEmailVerificationCodeApi = async (body: SendEmailVerificationCodeRequest) => {
     try {
@@ -43,7 +43,7 @@ export const onSendEmailVerificationCodeApi = async (body: SendEmailVerification
 interface CheckEmailVerificationCodeRequest {
     email: string;
     code: string;
-    purpose: "SIGN_UP" | "PASSWORD_RESET";
+    purpose: "SIGN_UP" | "PASSWORD_RESET" | "PASSWORD_SEARCH";
 }
 export const onCheckEmailVerificationCodeApi = async (body: CheckEmailVerificationCodeRequest) => {
     try {
