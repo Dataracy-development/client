@@ -18,6 +18,9 @@ export default function SocialAuthPage() {
                     credentials: "include", // 쿠키를 포함하여 요청
                 });
 
+                console.log("registerToken:::", registerToken);
+                return;
+
                 if (registerToken.ok) {
                     router.push("/signup?social=true");
 
