@@ -28,8 +28,7 @@ export default function SocialAuthPage() {
 
                 const reIssueResponse = await getRefreshToken();
 
-                console.log("reIssueResponse:::", reIssueResponse);
-                if (reIssueResponse.ok) {
+                if (reIssueResponse.httpStatus === 200) {
                     window.location.href = "/";
 
                     return;
