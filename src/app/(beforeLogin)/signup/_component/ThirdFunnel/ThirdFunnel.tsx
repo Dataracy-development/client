@@ -40,42 +40,44 @@ export default function ThirdFunnel() {
         setField(field, value);
     };
 
-    // 회원가입
-    const { mutate: signup } = useSignupMutation({
-        onSuccess: async () => {
-            try {
-                const authUrl = process.env.NODE_ENV === "development" ? "/auth/dev/token/re-issue" : "/auth/token/re-issue";
-                const response = await Apis.post(
-                    authUrl,
-                    {},
-                    {
-                        withCredentials: true,
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                );
-
-                if (response.ok) {
-                    queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
-                    queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
-
-                    router.push("/");
-                } else {
-                    alert("회원가입에 실패했습니다.");
-                    return;
+    const onSuccessSignup = async () => {
+        try {
+            const authUrl = process.env.NODE_ENV === "development" ? "/auth/dev/token/re-issue" : "/auth/token/re-issue";
+            const response = await Apis.post(
+                authUrl,
+                {},
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 }
-            } catch (error) {
-                console.error("Refresh API Error:", error);
+            );
+
+            if (response.ok) {
+                queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
+                queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
+
+                router.push("/");
+            } else {
                 alert("회원가입에 실패했습니다.");
                 return;
             }
-        },
+        } catch (error) {
+            console.error("Refresh API Error:", error);
+            alert("회원가입에 실패했습니다.");
+            return;
+        }
+    };
+
+    // 회원가입
+    const { mutate: signup } = useSignupMutation({
+        onSuccess: onSuccessSignup,
     });
 
     // 소셜 회원가입
     const { mutate: socialSignup } = useCreateMutation(onSocialSignupApi, "socialSignup", {
-        onSuccess: () => {},
+        onSuccess: onSuccessSignup,
     });
 
     const onSubmit = useCallback(
