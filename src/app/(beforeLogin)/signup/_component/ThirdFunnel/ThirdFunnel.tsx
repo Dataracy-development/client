@@ -8,6 +8,7 @@ import { useCreateMutation } from "@/hooks/mutations/hooks";
 import { useSignupMutation } from "@/hooks/mutations/useSignupMutation";
 import { Apis } from "@/utils/api";
 import { useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { useSignupStore } from "../../store/store";
@@ -55,10 +56,7 @@ export default function ThirdFunnel() {
             );
 
             if (response.httpStatus === 200) {
-                queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
-                queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
-
-                router.push("/");
+                window.location.href = "/";
             } else {
                 alert("회원가입에 실패했습니다.");
                 return;
@@ -73,11 +71,17 @@ export default function ThirdFunnel() {
     // 회원가입
     const { mutate: signup } = useSignupMutation({
         onSuccess: onSuccessSignup,
+        onError: (error: AxiosError) => {
+            alert((error.response?.data as { message: string }).message);
+        },
     });
 
     // 소셜 회원가입
     const { mutate: socialSignup } = useCreateMutation(onSocialSignupApi, "socialSignup", {
         onSuccess: onSuccessSignup,
+        onError: (error: AxiosError) => {
+            alert((error.response?.data as { message: string }).message);
+        },
     });
 
     const onSubmit = useCallback(

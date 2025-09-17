@@ -89,11 +89,8 @@ export default function EmailLoginForm() {
                 });
 
                 if (response.ok) {
-                    const { refreshToken } = await response.json();
-                    console.log("refreshToken:::", refreshToken);
-
                     try {
-                        const response = await Apis.post(
+                        await Apis.post(
                             "/auth/token/re-issue",
                             {},
                             {
@@ -104,12 +101,7 @@ export default function EmailLoginForm() {
                             }
                         );
 
-                        console.log("login response:::", response);
-
-                        queryClient.invalidateQueries({ queryKey: ["isLoggedIn"] });
-                        queryClient.refetchQueries({ queryKey: ["isLoggedIn"] });
-
-                        router.push("/");
+                        window.location.href = "/";
                     } catch (error) {
                         console.error("Refresh API Error:", error);
                     }
