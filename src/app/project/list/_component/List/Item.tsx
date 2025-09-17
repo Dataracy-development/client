@@ -1,11 +1,18 @@
 import { Project } from "@/types/commonTypes";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Item({ item }: { item: Project }) {
     return (
         <Link href={`/project/${item.id}`} className="group">
             <div className="w-full h-[200px] bg-white rounded-2xl border border-n300 flex cursor-pointer relative group-hover:border-n400 group-hover:shadow-sm transition-all duration-150">
-                <div className="w-[250px] h-full flex items-center justify-center rounded-l-2xl overflow-hidden bg-gray-200 text-gray-500">THUMBNAIL</div>
+                <div className="w-[250px] h-full flex items-center justify-center rounded-l-2xl overflow-hidden bg-gray-200 text-gray-500">
+                    {item.projectThumbnailUrl ? (
+                        <Image src={item.projectThumbnailUrl} alt={item.title} width={250} height={200} className="object-cover" />
+                    ) : (
+                        "NO IMAGE"
+                    )}
+                </div>
 
                 <div className="p-[15px] flex-1 flex flex-col justify-between">
                     <div>
