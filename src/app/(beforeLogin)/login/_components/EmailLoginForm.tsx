@@ -7,6 +7,7 @@ import { useInput } from "@/hooks/hooks";
 import { useCreateMutation } from "@/hooks/mutations/hooks";
 import { Apis } from "@/utils/api";
 import { useQueryClient } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
@@ -50,8 +51,6 @@ export default function EmailLoginForm() {
 
         return isValid;
     };
-
-    const [showToast, setShowToast] = useState(false);
 
     const loginMutation = useCreateMutation(
         onLoginApi,
@@ -110,8 +109,8 @@ export default function EmailLoginForm() {
                     return;
                 }
             },
-            onError: () => {
-                setShowToast(true);
+            onError: (error: AxiosError) => {
+                alert((error.response?.data as { message: string }).message);
             },
         },
         spinnerRef.current
